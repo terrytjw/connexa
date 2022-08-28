@@ -7,10 +7,14 @@ const Navbar = () => {
   const user = null;
   const username = null;
   return (
-    <nav className="h-16 w-full bg-blue-700 fixed top-0 py-0 px-[10vw] z-99">
-      <ul className="flex list-none m-0 p-0 items-center justify-evenly h-full">
+    <nav className="h-16 w-screen bg-white fixed top-0 py-0 px-10 z-99">
+      <ul className="flex list-none m-0 p-0 items-center justify-between h-full">
         <li>
-          <Link href="/">FEED</Link>
+          <Link href="/">
+            <a className="font-black tracking-widest py-1 px-2 border-2 border-gray-600 rounded hover:bg-gray-200 hover:border-gray-500 transition-all">
+              HOME
+            </a>
+          </Link>
         </li>
 
         {username ? (
@@ -32,7 +36,7 @@ const Navbar = () => {
         ) : (
           <li>
             <Link href="/login">
-              <Button>Login</Button>
+              <Button onClick={() => {}}>Login</Button>
             </Link>
           </li>
         )}

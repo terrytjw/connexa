@@ -24,7 +24,7 @@ module.exports = {
         // "gray-light": "#d3dce6",
       },
       fontFamily: {
-        // sans: ["Graphik", "sans-serif"],
+        sans: ["Work Sans", "sans-serif"],
         // serif: ["Merriweather", "serif"],
       },
       extend: {

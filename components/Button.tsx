@@ -2,12 +2,13 @@ import React, { MouseEventHandler } from "react";
 
 type ButtonProps = {
   children: string;
+  className?: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 };
-const Button = ({ children, onClick }: ButtonProps) => {
+const Button = ({ children, className, onClick }: ButtonProps) => {
   return (
     <button
-      className="bg-gray-500 hover:bg-gray-400 transition-all border-none text-white px-4 py-2 flex items-center text-center justify-center no-underline cursor-pointer rounded"
+      className={`bg-blue-700 hover:bg-blue-500 transition-all border-none text-white px-4 py-2 flex items-center text-center justify-center no-underline cursor-pointer rounded ${className}`}
       onClick={onClick}
     >
       {children}
