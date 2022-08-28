@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Loader from "../components/loader";
 
-export default function Home() {
+const HomePage = () => {
   return (
     <div className="flex flex-col items-center">
       <Head>
@@ -32,4 +32,6 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+};
+
+export default HomePage;
