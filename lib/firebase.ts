@@ -1,24 +1,56 @@
-import firebase from "firebase/app";
-import { getAuth } from "firebase/auth"; //docs: https://firebase.google.com/docs/firestore/quickstart
-import { getFirestore } from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
-
-let app;
+import { initializeApp, getApps, getApp } from "firebase/app";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth"; //docs: https://firebase.google.com/docs/firestore/quickstart
+import {
+  getFirestore,
+  collection,
+  where,
+  getDocs,
+  query,
+  limit,
+  writeBatch,
+  doc,
+  onSnapshot,
+} from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBhJMtwdYlPM2zj_dltuAR9s64wqYD89yY",
-  authDomain: "cryptorookie-io.firebaseapp.com",
-  projectId: "cryptorookie-io",
-  storageBucket: "cryptorookie-io.appspot.com",
-  messagingSenderId: "289361538010",
-  appId: "1:289361538010:web:1e7413ed101ac560f6aee3",
-  measurementId: "G-QS5D7DLDN3",
+  apiKey: "AIzaSyCNggaajrkeN9VfcyxgNqNKcrLt7tAJdyk",
+  authDomain: "connexa-f5c15.firebaseapp.com",
+  projectId: "connexa-f5c15",
+  storageBucket: "connexa-f5c15.appspot.com",
+  messagingSenderId: "159035113357",
+  appId: "1:159035113357:web:57e31887a8b1c9090407c4",
+  measurementId: "G-EBP1VR7WPV",
 };
 
-// condition to make sure initializeApp only runs once, coz Next.js sometimes runs the code
-// in this file twice, leading to errors
-if (!firebase.getApps.length) {
-  app = firebase.initializeApp(firebaseConfig);
+function createFirebaseApp(config) {
+  try {
+    return getApp();
+  } catch {
+    return initializeApp(config);
+  }
 }
 
-export const auth = getAuth(app);
-export const firestore = getFirestore(app);
+const firebaseApp = createFirebaseApp(firebaseConfig);
+
+// Auth
+export const auth = getAuth(firebaseApp);
+export const googleAuthProvider = new GoogleAuthProvider();
+
+// Firestore (DB)
+export const firestore = getFirestore(firebaseApp);
+
+export {
+  useAuthState,
+  doc,
+  onSnapshot,
+  getFirestore,
+  writeBatch,
+  signInWithPopup,
+  signOut,
+};
