@@ -3,6 +3,8 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import Button from "../components/Button";
 
+//test
+
 const HomePage = () => {
   return (
     <div className="bg-slate-200">
