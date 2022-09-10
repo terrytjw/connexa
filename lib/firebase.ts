@@ -19,13 +19,13 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCNggaajrkeN9VfcyxgNqNKcrLt7tAJdyk",
-  authDomain: "connexa-f5c15.firebaseapp.com",
-  projectId: "connexa-f5c15",
-  storageBucket: "connexa-f5c15.appspot.com",
-  messagingSenderId: "159035113357",
-  appId: "1:159035113357:web:57e31887a8b1c9090407c4",
-  measurementId: "G-EBP1VR7WPV",
+  apiKey: "AIzaSyCvBbc4XqIpln355K-G1rctsHRIt6-t2v4",
+  authDomain: "connexa-crypto.firebaseapp.com",
+  projectId: "connexa-crypto",
+  storageBucket: "connexa-crypto.appspot.com",
+  messagingSenderId: "476337055520",
+  appId: "1:476337055520:web:017a7dce8d9b7f08fcd945",
+  measurementId: "G-4CN2M7B5L7",
 };
 
 function createFirebaseApp(config) {
