@@ -17,9 +17,9 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`bg-blue-700 hover:bg-blue-500 transition-all border-none text-white 
+      className={`bg-black hover:bg-gray-600 transition-all border-none text-white 
               px-4 py-2 flex items-center text-center justify-center no-underline cursor-pointer 
-              rounded ${disabled && `bg-blue-200`} ${className}`}
+              rounded ${disabled && `bg-gray-200`} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >
