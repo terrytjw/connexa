@@ -15,9 +15,9 @@ const HomePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mt-16 h-screen">
+      <div className="h-screen">
         <h1 className="text-3xl font-serif font-bold pt-20 text-center">
-          Welcome to Crypto Connect!
+          Welcome to Connexa!
         </h1>
         <Button
           className="m-auto mt-6"
@@ -27,7 +27,7 @@ const HomePage = () => {
         </Button>
       </div>
 
-      {/* <footer>
+      <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
@@ -38,7 +38,7 @@ const HomePage = () => {
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
-      </footer> */}
+      </footer>
     </div>
   );
 };

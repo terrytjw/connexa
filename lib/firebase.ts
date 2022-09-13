@@ -17,6 +17,7 @@ import {
   onSnapshot,
 } from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCvBbc4XqIpln355K-G1rctsHRIt6-t2v4",
@@ -53,4 +54,5 @@ export {
   writeBatch,
   signInWithPopup,
   signOut,
+  useDocumentData,
 };
