@@ -1,4 +1,4 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -7,18 +7,13 @@ import {
 } from "firebase/auth"; //docs: https://firebase.google.com/docs/firestore/quickstart
 import {
   getFirestore,
-  collection,
-  where,
-  getDocs,
-  query,
-  limit,
   writeBatch,
   doc,
   onSnapshot,
+  getDoc,
 } from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-
 const firebaseConfig = {
   apiKey: "AIzaSyCvBbc4XqIpln355K-G1rctsHRIt6-t2v4",
   authDomain: "connexa-crypto.firebaseapp.com",
@@ -55,4 +50,5 @@ export {
   signInWithPopup,
   signOut,
   useDocumentData,
+  getDoc,
 };

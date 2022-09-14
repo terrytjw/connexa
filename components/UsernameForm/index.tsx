@@ -1,7 +1,6 @@
-import { getDoc } from "firebase/firestore";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "../../lib/Context";
-import { doc, getFirestore, writeBatch } from "../../lib/firebase";
+import { doc, getFirestore, writeBatch, getDoc } from "../../lib/firebase";
 import { debounce } from "lodash";
 import UsernameMessage from "./UsernameMessage";
 import Button from "../Button";
@@ -51,8 +50,6 @@ const UsernameForm = () => {
     }
   };
 
-  //
-
   useEffect(() => {
     checkUsername(formValue);
   }, [formValue]);
@@ -64,7 +61,6 @@ const UsernameForm = () => {
       if (username.length >= 3) {
         const ref = doc(getFirestore(), "usernames", username);
         const snap = await getDoc(ref);
-        console.log("Firestore read executed!", snap.exists());
         setIsValid(!snap.exists());
         setLoading(false);
       }
@@ -73,15 +69,18 @@ const UsernameForm = () => {
   );
 
   return (
-    <div>
+    <>
+      {/* bg overlay */}
       <div className="fixed top-0 left-0 h-screen w-screen bg-black opacity-50"></div>
-      <div className="p-4 h-[25%] w-[80%] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white rounded-lg">
+
+      <div className="p-8 w-[90%] max-w-[25rem] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white rounded-lg">
         <h3 className="font-bold text-xl mb-4">Pick a username!</h3>
-        <form className="h-full flex flex-col" onSubmit={onSubmit}>
+        <form className="flex flex-col" onSubmit={onSubmit}>
           <input
-            className="p-2 mb-2 border-[1.5px] border-gray-400 rounded"
+            className="p-2 mb-2 border-[1.5px] border-gray-400 rounded outline-gray-500"
             name="username"
             placeholder="e.g. connexa"
+            autoComplete="off"
             value={formValue}
             onChange={onChange}
           />
@@ -92,16 +91,12 @@ const UsernameForm = () => {
             loading={loading}
           />
 
-          <Button
-            type="submit"
-            className="w-[15rem] absolute bottom-4 left-11"
-            disabled={!isValid}
-          >
+          <Button type="submit" className="mt-4" disabled={!isValid}>
             Confirm
           </Button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
