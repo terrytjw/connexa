@@ -15,9 +15,9 @@ const HomePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mt-16 h-screen">
+      <div className="h-screen">
         <h1 className="text-3xl font-serif font-bold pt-20 text-center">
-          Welcome to Crypto Connect!
+          Welcome to Connexa!
         </h1>
         <Button
           className="m-auto mt-6"

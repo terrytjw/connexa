@@ -3,7 +3,7 @@ import { auth, doc, getFirestore, onSnapshot, useAuthState } from "./firebase";
 
 // Custom hook to read  auth record and user profile doc
 export const useUserData = () => {
-  const [user] = useAuthState(auth);
+  const [user, isAuthLoading] = useAuthState(auth);
   const [username, setUsername] = useState(null);
 
   useEffect(() => {
@@ -22,5 +22,5 @@ export const useUserData = () => {
     return unsubscribe;
   }, [user]);
 
-  return { user, username };
+  return { user, username, isAuthLoading };
 };
