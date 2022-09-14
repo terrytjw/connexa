@@ -13,7 +13,7 @@ const UsernameMessage = ({ username, isValid, loading }: UsernameProps) => {
   } else if (username && !isValid) {
     return <p>That username is taken!</p>;
   } else {
-    return <p></p>;
+    return <p className="h-6"></p>;
   }
 };
 
