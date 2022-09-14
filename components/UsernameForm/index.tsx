@@ -4,6 +4,7 @@ import { UserContext } from "../../lib/Context";
 import { doc, getFirestore, writeBatch } from "../../lib/firebase";
 import { debounce } from "lodash";
 import UsernameMessage from "./UsernameMessage";
+import Button from "../Button";
 
 const UsernameForm = () => {
   const [formValue, setFormValue] = useState("");
@@ -71,36 +72,37 @@ const UsernameForm = () => {
     []
   );
 
-  return !username ? (
-    <section>
-      <h3>Choose Username</h3>
-      <form onSubmit={onSubmit}>
-        <input
-          name="username"
-          placeholder="myname"
-          value={formValue}
-          onChange={onChange}
-        />
-        <UsernameMessage
-          username={formValue}
-          isValid={isValid}
-          loading={loading}
-        />
-        <button type="submit" className="btn-green" disabled={!isValid}>
-          Choose
-        </button>
+  return (
+    <div>
+      <div className="fixed top-0 left-0 h-screen w-screen bg-black opacity-50"></div>
+      <div className="p-4 h-[25%] w-[80%] fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white rounded-lg">
+        <h3 className="font-bold text-xl mb-4">Pick a username!</h3>
+        <form className="h-full flex flex-col" onSubmit={onSubmit}>
+          <input
+            className="p-2 mb-2 border-[1.5px] border-gray-400 rounded"
+            name="username"
+            placeholder="e.g. connexa"
+            value={formValue}
+            onChange={onChange}
+          />
 
-        <h3>Debug State</h3>
-        <div>
-          Username: {formValue}
-          <br />
-          Loading: {loading.toString()}
-          <br />
-          Username Valid: {isValid.toString()}
-        </div>
-      </form>
-    </section>
-  ) : null;
+          <UsernameMessage
+            username={formValue}
+            isValid={isValid}
+            loading={loading}
+          />
+
+          <Button
+            type="submit"
+            className="w-[15rem] absolute bottom-4 left-11"
+            disabled={!isValid}
+          >
+            Confirm
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default UsernameForm;

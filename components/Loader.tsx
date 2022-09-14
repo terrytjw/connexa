@@ -1,10 +1,7 @@
 import React from "react";
 
-type LoaderProps = {
-  show: boolean;
-};
-const Loader = ({ show }: LoaderProps) => {
-  return show ? (
+const Loader = () => {
+  return (
     <div role="status">
       <svg
         aria-hidden="true"
@@ -24,7 +21,7 @@ const Loader = ({ show }: LoaderProps) => {
       </svg>
       <span className="sr-only">Loading...</span>
     </div>
-  ) : null;
+  );
 };
 
 export default Loader;
