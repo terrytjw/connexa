@@ -10,6 +10,7 @@ import {
   signOut,
 } from "../lib/firebase";
 import UsernameForm from "./UsernameForm";
+import toast from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,10 +24,12 @@ const Navbar = () => {
     await signInWithPopup(auth, googleAuthProvider).catch((error) => {
       console.error(error);
     });
+    toast.success("You are logged in.");
   };
 
   const signOutGoogle = () => {
     signOut(auth);
+    toast.success("You are logged out.");
   };
 
   return (
@@ -146,7 +149,7 @@ const Navbar = () => {
                               <Menu.Item>
                                 {({ active }) => (
                                   <a
-                                    href="#"
+                                    href="/profile"
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
@@ -207,28 +210,14 @@ const Navbar = () => {
                   href="#"
                   className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                 >
-                  Dashboard
+                  Leaderboard
                 </Disclosure.Button>
                 <Disclosure.Button
                   as="a"
                   href="#"
                   className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                 >
-                  Team
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
-                >
-                  Projects
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
-                >
-                  Calendar
+                  Category
                 </Disclosure.Button>
               </div>
               {user ? (
@@ -260,7 +249,7 @@ const Navbar = () => {
                   <div className="mt-3 space-y-1 px-2">
                     <Disclosure.Button
                       as="a"
-                      href="#"
+                      href="/profile"
                       className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                     >
                       Your Profile
@@ -275,7 +264,7 @@ const Navbar = () => {
                     <Disclosure.Button
                       as="a"
                       onClick={signOutGoogle}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
+                      className="block rounded-md px-3 py-2 text-base font-medium cursor-pointer text-black hover:bg-black hover:text-white transition-all"
                     >
                       Sign out
                     </Disclosure.Button>
@@ -296,7 +285,11 @@ const Navbar = () => {
           </>
         )}
       </Disclosure>
-      {user ? (username ? null : !isUsernameLoading && <UsernameForm />) : null}
+      {user ? (
+        username ? null : isUsernameLoading ? null : (
+          <UsernameForm />
+        )
+      ) : null}
     </>
   );
 };
