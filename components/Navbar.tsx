@@ -19,7 +19,7 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
-  const { user, username, isAuthLoading } = useContext(UserContext);
+  const { user, username } = useContext(UserContext);
 
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleAuthProvider).catch((error) => {
@@ -35,7 +35,7 @@ const Navbar = () => {
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+          <div className="mx-auto max-w-[110rem] px-2 sm:px-4 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="flex items-center px-2 lg:px-0">
                 <div className="flex-shrink-0">
