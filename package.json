@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^2.0.8",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.4",
     "firebase": "^9.9.3",
     "lodash": "^4.17.21",
     "next": "12.2.5",

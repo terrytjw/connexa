@@ -3,11 +3,9 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import Button from "../components/Button";
 
-//test
-
 const HomePage = () => {
   return (
-    <div className="bg-slate-200">
+    <div className="bg-slate-200 box-border">
       <Head>
         <title>Crypto Connect</title>
         <meta
