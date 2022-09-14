@@ -8,7 +8,7 @@ export const UserContext = createContext<{
   isUsernameLoading: boolean;
 }>({
   user: null,
-  username: null,
+  username: "",
   isAuthLoading: false,
   isUsernameLoading: false,
 });
