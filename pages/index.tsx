@@ -15,7 +15,7 @@ const HomePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mt-16 flex justify-between h-screen">
+      <div className="flex justify-between h-screen">
         <div className="grow-[2]">Left side bar</div>
 
         <div className="border border-x-gray-300 grow-[5.5]">
