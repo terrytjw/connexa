@@ -115,7 +115,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Profile dropdown */}
-                    {user ? (
+                    {user && !isAuthLoading ? (
                       <>
                         <button
                           type="button"
@@ -220,7 +220,7 @@ const Navbar = () => {
                   Category
                 </Disclosure.Button>
               </div>
-              {user ? (
+              {user && !isAuthLoading ? (
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
