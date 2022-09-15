@@ -8,10 +8,6 @@ import {
 } from "@heroicons/react/20/solid";
 import Button from "./Button";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const NewPost = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(undefined);

@@ -5,8 +5,9 @@ import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { UserContext } from "../lib/Context";
 import { useUserData } from "../lib/hooks";
+import type { AppProps } from "next/app";
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const userData = useUserData();
 
   return (
