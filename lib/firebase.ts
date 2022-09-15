@@ -4,7 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-} from "firebase/auth"; //docs: https://firebase.google.com/docs/firestore/quickstart
+} from "firebase/auth";
 import {
   getFirestore,
   writeBatch,
@@ -19,7 +19,15 @@ import {
   orderBy,
   QueryDocumentSnapshot,
   DocumentData,
-} from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 const firebaseConfig = {
@@ -48,6 +56,10 @@ export const googleAuthProvider = new GoogleAuthProvider();
 
 // Firestore (DB)
 export const firestore = getFirestore(firebaseApp);
+
+// Firebase Storage
+export const storage = getStorage(firebaseApp);
+export const STATE_CHANGED = "state_changed";
 
 /********************* Helper functions **********************/
 /**`
@@ -97,4 +109,9 @@ export {
   getDocs,
   limit,
   orderBy,
+  serverTimestamp,
+  setDoc,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
 };
