@@ -1,7 +1,7 @@
 import StarIcon from "@mui/icons-material/Star";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default function Rewards({}) {
+const Rewards = ({}) => {
   return (
     <div className="w-72 h-36">
       <div className="rounded-3xl bg-black w-4/5 h-full text-white p-4 flex flex-col justify-around">
@@ -65,4 +65,6 @@ export default function Rewards({}) {
       </div>
     </div>
   );
-}
+};
+
+export default Rewards;

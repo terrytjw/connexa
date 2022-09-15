@@ -2,7 +2,7 @@ import { QuestionMarkSharp } from "@mui/icons-material";
 import { useState } from "react";
 import { quizData } from "../data/quizData";
 
-export default function QuizComponent() {
+const QuizComponent = () => {
   const [slide, setSlide] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number>(null);
@@ -98,6 +98,6 @@ export default function QuizComponent() {
       </div>
     </div>
   );
-}
+};
 
-function QuizQuestion({ question }) {}
+export default QuizComponent;
