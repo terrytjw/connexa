@@ -11,8 +11,9 @@ import {
 } from "../lib/firebase";
 import UsernameForm from "./UsernameForm";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -129,10 +130,12 @@ const Navbar = () => {
                           <div>
                             <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-white">
                               <span className="sr-only">Open user menu</span>
-                              <img
-                                className="h-8 w-8 rounded-xl"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
+                              <Image
+                                className="rounded-xl"
+                                src={user.photoURL}
+                                alt="Profile picture"
+                                width={30}
+                                height={30}
                               />
                             </Menu.Button>
                           </div>
@@ -149,7 +152,7 @@ const Navbar = () => {
                               <Menu.Item>
                                 {({ active }) => (
                                   <a
-                                    href="/profile"
+                                    href={`/${username}`}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
@@ -223,11 +226,13 @@ const Navbar = () => {
               {user && !isAuthLoading ? (
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-xl"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                    <div className="flex-shrink-0 mt-2">
+                      <Image
+                        className="rounded-xl"
+                        src={user.photoURL}
+                        alt="Profile picture"
+                        width={35}
+                        height={35}
                       />
                     </div>
                     <div className="ml-3">
@@ -249,7 +254,7 @@ const Navbar = () => {
                   <div className="mt-3 space-y-1 px-2">
                     <Disclosure.Button
                       as="a"
-                      href="/profile"
+                      href={`/${username}`}
                       className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                     >
                       Your Profile
