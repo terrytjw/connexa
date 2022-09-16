@@ -1,6 +1,6 @@
-import { QuestionMarkSharp } from "@mui/icons-material";
 import { useState } from "react";
 import { quizData } from "../data/quizData";
+import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 
 const QuizComponent = () => {
   const [slide, setSlide] = useState(0);
@@ -45,19 +45,7 @@ const QuizComponent = () => {
             )
           }
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-            />
-          </svg>
+          <ArrowSmallRightIcon />
         </div>
       )}
       <div
