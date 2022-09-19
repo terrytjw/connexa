@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Tab } from "@headlessui/react";
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const TabGroup = () => {
   let [categories] = useState({
     Posts: [
@@ -49,13 +45,13 @@ const TabGroup = () => {
             <Tab
               key={category}
               className={({ selected }) =>
-                classNames(
-                  "w-full rounded-lg py-2 text-sm font-medium leading-5 text-white",
-                  "focus:outline-none transition-all",
-                  selected
-                    ? "bg-black"
-                    : "text-black hover:bg-gray-300 hover:text-black"
-                )
+                `w-full rounded-lg py-2 text-sm font-medium leading-5 text-white
+                  focus:outline-none transition-all
+                  ${
+                    selected
+                      ? "bg-black"
+                      : "text-black hover:bg-gray-300 hover:text-black"
+                  }`
               }
             >
               {category}
@@ -66,10 +62,7 @@ const TabGroup = () => {
           {Object.values(categories).map((posts, idx) => (
             <Tab.Panel
               key={idx}
-              className={classNames(
-                "rounded-xl bg-white p-3",
-                "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-              )}
+              className={`rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2`}
             >
               <ul>
                 {posts.map((post) => (
@@ -91,10 +84,7 @@ const TabGroup = () => {
 
                     <a
                       href="#"
-                      className={classNames(
-                        "absolute inset-0 rounded-md",
-                        "ring-blue-400 focus:z-10 focus:outline-none focus:ring-2"
-                      )}
+                      className={`absolute inset-0 rounded-md ring-blue-400 focus:z-10 focus:outline-none focus:ring-2`}
                     />
                   </li>
                 ))}
