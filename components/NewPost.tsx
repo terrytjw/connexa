@@ -13,7 +13,6 @@ import {
   ref,
   serverTimestamp,
   setDoc,
-  STATE_CHANGED,
   storage,
   uploadBytesResumable,
 } from "../lib/firebase";
@@ -24,7 +23,6 @@ const NewPost = () => {
   const [selectedCategory, setSelectedCategory] = useState();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>();
   const [postUploading, setPostUploading] = useState(false);
-  const [downloadURL, setDownloadURL] = useState("");
 
   const { user, username, isAuthLoading } = useContext(UserContext);
 
@@ -43,33 +41,24 @@ const NewPost = () => {
   };
 
   // only call this function from handleSubmit
-  const uploadFileToFirebase = async (uid: string) => {
+  const uploadFileToFirebase = (uid: string): Promise<string> => {
     const file = uploadedFiles![0];
     const extension = file.type.split("/")[1];
 
     // Makes reference to the storage bucket location
     const fileRef = ref(storage, `uploads/${uid}/${Date.now()}.${extension}`);
-    setPostUploading(true);
 
     // Starts the upload
     const task = uploadBytesResumable(fileRef, file);
 
-    // Listen to updates to upload task
-    task.on(STATE_CHANGED, (snapshot) => {
-      const pct = (
-        (snapshot.bytesTransferred / snapshot.totalBytes) *
-        100
-      ).toFixed(0);
-      // setProgress(pct);
-    });
-
-    // Get downloadURL AFTER task resolves (Note: this is not a native Promise)
-    task
-      .then((d) => getDownloadURL(fileRef))
+    // Get downloadURL AFTER task resolves (Note: this is not a native Promise, can't use async/await with it)
+    const downloadURL: Promise<string> = task
+      .then(() => getDownloadURL(fileRef))
       .then((url: any) => {
-        setDownloadURL(url);
-        setPostUploading(false);
+        return url;
       });
+
+    return downloadURL;
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -87,33 +76,32 @@ const NewPost = () => {
           const uid = auth.currentUser && auth.currentUser.uid;
           const slug = encodeURI(kebabCase(questionTitle.value));
 
-          const ref = doc(getFirestore(), "users", uid!, "posts", slug); // uid might be missing
-
-          if (uploadedFiles) {
-            await uploadFileToFirebase(uid!).catch((error) => {
-              toast.error("File Upload error");
-              return;
-            });
-          }
+          const slugRef = doc(getFirestore(), "users", uid!, "posts", slug);
 
           // Tip: give all fields a default value here
-          const data = {
+          let data = {
             questionTitle: questionTitle.value,
             slug,
             uid,
             username,
             content: description.value || "default content",
-            imageURL: downloadURL || "",
+            imageURL: "",
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
             heartCount: 0,
           };
 
-          await setDoc(ref, data)
-            .then(() => toast.success("Question posted!"))
-            .catch((error) => {
-              toast.error("Question posting error!");
-            });
+          if (uploadedFiles) {
+            const downloadURL = await uploadFileToFirebase(uid!);
+            data = { ...data, imageURL: downloadURL };
+          }
+
+          try {
+            await setDoc(slugRef, data);
+            toast.success("Question posted!");
+          } catch (error) {
+            toast.error("Question posting error!");
+          }
 
           handleCancel();
         } else {
