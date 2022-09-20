@@ -1,35 +1,144 @@
-import { Fragment, useState } from "react";
-import { Listbox, RadioGroup, Transition } from "@headlessui/react";
-import {
-  CalendarIcon,
-  PaperClipIcon,
-  TagIcon,
-  UserCircleIcon,
-} from "@heroicons/react/20/solid";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { RadioGroup } from "@headlessui/react";
+import { PaperClipIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
+import { UserContext } from "../lib/Context";
+import toast from "react-hot-toast";
+import { kebabCase } from "lodash";
+import {
+  auth,
+  doc,
+  getDownloadURL,
+  getFirestore,
+  ref,
+  serverTimestamp,
+  setDoc,
+  storage,
+  uploadBytesResumable,
+} from "../lib/firebase";
+import Loader from "./Loader";
 
 const NewPost = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(undefined);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>();
+  const [postUploading, setPostUploading] = useState(false);
+
+  const { user, username, isAuthLoading } = useContext(UserContext);
+
+  const expandQuestionForm = () => {
+    if (user && !isAuthLoading) {
+      setIsExpanded(true);
+    } else {
+      toast.error("Please login first!");
+    }
+  };
+
+  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length !== 0) {
+      setUploadedFiles(Array.from(event.target.files));
+    }
+  };
+
+  // only call this function from handleSubmit
+  const uploadFileToFirebase = (uid: string): Promise<string> => {
+    const file = uploadedFiles![0];
+    const extension = file.type.split("/")[1];
+
+    // Makes reference to the storage bucket location
+    const fileRef = ref(storage, `uploads/${uid}/${Date.now()}.${extension}`);
+
+    // Starts the upload
+    const task = uploadBytesResumable(fileRef, file);
+
+    // Get downloadURL AFTER task resolves (Note: this is not a native Promise, can't use async/await with it)
+    const downloadURL: Promise<string> = task
+      .then(() => getDownloadURL(fileRef))
+      .then((url: any) => {
+        return url;
+      });
+
+    return downloadURL;
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { questionTitle, description } = event.currentTarget;
+
+    const isTitleValid =
+      questionTitle.value.length > 3 && questionTitle.value.length < 100;
+    const isDescriptionValid = description.value.length < 1000;
+    const isCategoryValid = selectedCategory !== undefined;
+
+    if (isTitleValid) {
+      if (isDescriptionValid) {
+        if (isCategoryValid) {
+          const uid = auth.currentUser && auth.currentUser.uid;
+          const slug = encodeURI(kebabCase(questionTitle.value));
+
+          const slugRef = doc(getFirestore(), "users", uid!, "posts", slug);
+
+          // Tip: give all fields a default value here
+          let data = {
+            questionTitle: questionTitle.value,
+            slug,
+            uid,
+            username,
+            content: description.value || "default content",
+            imageURL: "",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            heartCount: 0,
+          };
+
+          if (uploadedFiles) {
+            const downloadURL = await uploadFileToFirebase(uid!);
+            data = { ...data, imageURL: downloadURL };
+          }
+
+          try {
+            await setDoc(slugRef, data);
+            toast.success("Question posted!");
+          } catch (error) {
+            toast.error("Question posting error!");
+          }
+
+          handleCancel();
+        } else {
+          toast.error("Category is not selected!");
+        }
+      } else {
+        toast.error("Description is too long!");
+      }
+    } else {
+      toast.error("Title is either too short or too long!");
+    }
+  };
+
+  const handleCancel = () => {
+    setIsExpanded(false);
+    setSelectedCategory(undefined);
+    setUploadedFiles(undefined);
+  };
 
   return !isExpanded ? (
     <div className="m-auto p-2 w-[80%] flex justify-between items-center bg-white rounded-lg border border-gray-300 shadow">
       <div className="ml-4 text-gray-500">What am I wondering today?</div>
-      <Button className="w-20" onClick={() => setIsExpanded(true)}>
+      <Button className="w-20" onClick={expandQuestionForm}>
         Ask
       </Button>
     </div>
   ) : (
-    <form action="#" className="relative m-auto w-[80%]">
+    <form onSubmit={handleSubmit} className="relative m-auto w-[80%]">
       <div className="overflow-hidden rounded-lg border border-gray-300 shadow">
-        <label htmlFor="title" className="sr-only">
+        <label htmlFor="questionTitle" className="sr-only">
           Question
         </label>
         <input
           type="text"
-          name="title"
-          id="title"
-          className="p-4 block w-full border-0 pt-2.5 text-lg font-medium placeholder-gray-500 focus:outline-none border-b-[1px] border-gray-300"
+          name="questionTitle"
+          id="questionTitle"
+          className="p-4 pt-2.5 block w-full text-lg font-medium placeholder-gray-400 border-0 border-b border-gray-300 focus:border-gray-300"
           placeholder="Ask a question"
         />
         <label htmlFor="description" className="sr-only">
@@ -39,23 +148,10 @@ const NewPost = () => {
           rows={5}
           name="description"
           id="description"
-          className="p-4 block w-full resize-none border-0 placeholder-gray-500 focus:outline-none sm:text-sm"
+          className="appearance-none p-4 block w-full resize-none placeholder-gray-400 sm:text-sm border-0 focus:ring-0"
           placeholder="Try to be as descriptive as possible..."
           defaultValue={""}
         />
-
-        {/* Spacer element to match the height of the toolbar */}
-        {/* <div aria-hidden="true">
-          <div className="py-2">
-            <div className="h-9" />
-          </div>
-          <div className="h-px" />
-          <div className="py-2">
-            <div className="py-px">
-              <div className="h-9" />
-            </div>
-          </div>
-        </div> */}
 
         <RadioGroup
           value={selectedCategory}
@@ -124,31 +220,47 @@ const NewPost = () => {
           </div>
         </RadioGroup>
 
-        <div className="m-4 flex justify-end gap-3">
-          <button
-            type="button"
-            className="mr-auto group inline-flex items-center rounded-full p-2 text-gray-400"
+        <div className="sm:flex m-4 justify-end gap-3">
+          <label
+            className="sm:inline-flex mr-auto group items-center rounded-full text-gray-400 cursor-pointer"
+            htmlFor="uploadFile"
           >
-            <PaperClipIcon
-              className="-ml-1 mr-2 h-5 w-5 group-hover:text-gray-500"
-              aria-hidden="true"
+            <input
+              className="hidden"
+              id="uploadFile"
+              type="file"
+              // multiple
+              accept="image/x-png,image/gif,image/jpg,image/jpeg"
+              onChange={onFileChange}
             />
-            <span className="text-sm italic text-gray-500 group-hover:text-gray-600">
-              Attach a file
+            <div className="inline-block px-3 py-1 border border-gray-400 group-hover:border-gray-900 rounded-xl transition-all">
+              <PaperClipIcon
+                className="inline-block -ml-1 mr-2 h-5 w-5 group-hover:text-gray-600 transition-all"
+                aria-hidden="true"
+              />
+              <span className="text-sm italic text-gray-500 group-hover:text-gray-600 transition-all">
+                Attach a file
+              </span>
+            </div>
+            <span className="p-2 sm:p-0 block sm:inline-flex ml-2 text-sm">
+              {uploadedFiles && uploadedFiles[0].name}
             </span>
-          </button>
-          <button
-            className="items-center rounded-md border px-4 py-2 text-sm font-medium text-black hover:border-gray-700 transition-all focus:outline-none"
-            onClick={() => setIsExpanded(false)}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="items-center rounded-md border bg-black border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 transition-all focus:outline-none"
-          >
-            Ask
-          </button>
+          </label>
+
+          <div className="block sm:inline-flex">
+            <button
+              className="items-center rounded-md border px-4 py-2 text-sm font-medium text-black hover:border-gray-700 transition-all focus:outline-none"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="items-center rounded-md border bg-black border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 transition-all focus:outline-none"
+            >
+              Ask
+            </button>
+          </div>
         </div>
       </div>
 
