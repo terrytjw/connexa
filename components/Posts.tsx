@@ -14,7 +14,7 @@ import {
 import { comments } from "../data/commentData";
 import Comment from "./Comment";
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, limit }) => {
   posts.map((post) => {
     <Post post />;
   });
@@ -26,7 +26,7 @@ const Post = ({ post }) => {
   });
 
   return (
-    <div className="flex flex-col w-5/12 h-max border border-black rounded-2xl p-5">
+    <div className="flex flex-col w-11/12 h-max border border-black rounded-2xl p-5 lg:w-5/12">
       <div className="top-row flex items-center justify-between mb-2">
         <div className="profile-pic w-10 h-10 overflow-hidden rounded-full mr-3">
           <Image src={img} />
@@ -68,7 +68,7 @@ const Post = ({ post }) => {
           </div>
           <div className="number">6</div>
         </div>
-        <div className="views flex items-center p-3 rounded-3xl bg-gray-100 gap-1 mr-auto">
+        <div className="views items-center p-3 rounded-3xl bg-gray-100 gap-1 mr-auto hidden lg:flex">
           <div className="img">
             <EyeIcon className="w-5 h-5" />
           </div>
@@ -84,7 +84,7 @@ const Post = ({ post }) => {
       <div className="comments-section flex flex-col">
         {parentComments.length !== 0 ? (
           parentComments.map((comment) => {
-            return <Comment {...comment} />;
+            return <Comment {...comment} key={comment.id} />;
           })
         ) : (
           <div>Be the first to comment!</div>

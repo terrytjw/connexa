@@ -1,15 +1,21 @@
 import img from "../public/assets/images/postphoto.jpg";
 import Image from "next/image";
-import { ArrowUturnLeftIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUturnLeftIcon,
+  HeartIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { comments } from "../data/commentData";
 import { useState } from "react";
+import CommentForm from "./CommentForm";
 
 interface CommentProp {
   id: Number;
   body: String;
   isRootComment: Boolean;
   parentId: Number;
-  createdAt: Number;
+  createdAt: Date;
   likes: Number;
   fullName: String;
 }
@@ -23,11 +29,18 @@ const Comment = ({
   likes,
   fullName,
 }: CommentProp) => {
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
   const [childrenHidden, setChildrenHidden] = useState(false);
+  const [replying, setReplying] = useState(false);
 
   const childComments = comments.filter((comment) => {
     return comment.parentId === id;
   });
+  console.log(childComments);
+
   return (
     <>
       <div className="comment flex items-center p-3 bg-gray-100 justify-between rounded-xl mt-3">
@@ -38,16 +51,33 @@ const Comment = ({
           <div className="name font-bold text-sm">{fullName}</div>
           <div className="message text-sm">{body}</div>
         </div>
-        <div className="reply p-2 bg-gray-200 rounded-full mr-2">
-          <ArrowUturnLeftIcon className="w-5 h-5" />
-        </div>
-        <div className="hearts flex items-center gap-1 p-2 rounded-full bg-gray-200">
-          <div className="img">
-            <HeartIcon className="w-5 h-5" />
+        <div className="flex flex-col gap-1 justify-between ">
+          <div className="date text-xs self-end text-gray-500">
+            {dateFormatter.format(Date.parse(createdAt.toString()))}
           </div>
-          <div className="number">{likes.toString()}</div>
+          <div className="buttons flex">
+            <div className="delete p-2 bg-gray-200 rounded-full mr-2 cursor-pointer">
+              <TrashIcon className="w-4 h-4" />
+            </div>
+            <div className="edit p-2 bg-gray-200 rounded-full mr-2 cursor-pointer">
+              <PencilSquareIcon className="w-4 h-4" />
+            </div>
+            <div
+              className="reply p-2 bg-gray-200 rounded-full mr-2 cursor-pointer"
+              onClick={() => setReplying((prev) => !prev)}
+            >
+              <ArrowUturnLeftIcon className="w-4 h-4" />
+            </div>
+            <div className="hearts flex items-center gap-1 p-2 rounded-full bg-gray-200 cursor-pointer text-sm">
+              <div className="img">
+                <HeartIcon className="w-4 h-4" />
+              </div>
+              <div className="number">{likes.toString()}</div>
+            </div>
+          </div>
         </div>
       </div>
+      {replying && <CommentForm autoFocus setReplying={setReplying} />}
 
       <div className="children flex">
         <button
@@ -57,7 +87,7 @@ const Comment = ({
          }
         `}
           onClick={() => setChildrenHidden((prev) => !prev)}
-        ></button>
+        />
         {childrenHidden ? (
           <button
             onClick={() => setChildrenHidden((prev) => !prev)}
@@ -69,7 +99,7 @@ const Comment = ({
           <div className="grow">
             {childComments.length !== 0 &&
               childComments.map((comment) => {
-                return <Comment {...comment} />;
+                return <Comment {...comment} key={comment.id} />;
               })}
           </div>
         )}
