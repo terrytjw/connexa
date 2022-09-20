@@ -5,7 +5,7 @@ import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 const QuizComponent = () => {
   const [slide, setSlide] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<number>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const quiz = quizData[0];
 
