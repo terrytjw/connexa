@@ -44,7 +44,6 @@ export async function getServerSideProps() {
 }
 
 const PostPage = ({ posts }: Props) => {
-  console.log(posts);
   return (
     <div className="flex items-center justify-center ">
       <PostList posts={posts} />
