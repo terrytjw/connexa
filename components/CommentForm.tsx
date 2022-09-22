@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import img from "../public/assets/images/postphoto.jpg";
 import Image from "next/image";
 
-const CommentForm = ({ autoFocus, setReplying }) => {
-  const [comment, setComment] = useState("");
+const CommentForm = ({ autoFocus, setReplying, initialValue = "" }) => {
+  const [comment, setComment] = useState(initialValue);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (e) => {

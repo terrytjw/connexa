@@ -33,13 +33,13 @@ const Comment = ({
     dateStyle: "medium",
     timeStyle: "short",
   });
+
   const [childrenHidden, setChildrenHidden] = useState(false);
   const [replying, setReplying] = useState(false);
 
   const childComments = comments.filter((comment) => {
     return comment.parentId === id;
   });
-  console.log(childComments);
 
   return (
     <>
@@ -52,9 +52,7 @@ const Comment = ({
           <div className="message text-sm">{body}</div>
         </div>
         <div className="flex flex-col gap-1 justify-between ">
-          <div className="date text-xs self-end text-gray-500">
-            {dateFormatter.format(Date.parse(createdAt.toString()))}
-          </div>
+          <div className="date text-xs self-end text-gray-500">6h ago</div>
           <div className="buttons flex">
             <div className="delete p-2 bg-gray-200 rounded-full mr-2 cursor-pointer">
               <TrashIcon className="w-4 h-4" />
