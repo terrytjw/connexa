@@ -4,14 +4,30 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
-} from "firebase/auth"; //docs: https://firebase.google.com/docs/firestore/quickstart
+} from "firebase/auth";
 import {
   getFirestore,
   writeBatch,
   doc,
   onSnapshot,
   getDoc,
-} from "firebase/firestore"; // docs: https://firebase.google.com/docs/auth/web/start
+  query,
+  collection,
+  where,
+  getDocs,
+  limit,
+  orderBy,
+  QueryDocumentSnapshot,
+  DocumentData,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 const firebaseConfig = {
@@ -24,7 +40,7 @@ const firebaseConfig = {
   measurementId: "G-4CN2M7B5L7",
 };
 
-function createFirebaseApp(config) {
+function createFirebaseApp(config: any) {
   try {
     return getApp();
   } catch {
@@ -41,7 +57,33 @@ export const googleAuthProvider = new GoogleAuthProvider();
 // Firestore (DB)
 export const firestore = getFirestore(firebaseApp);
 
-export function postToJSON(doc) {
+// Firebase Storage
+export const storage = getStorage(firebaseApp);
+export const STATE_CHANGED = "state_changed";
+
+/********************* Helper functions **********************/
+/**`
+ * Gets a users/{uid} document with username
+ * @param  {string} username
+ */
+export async function getUserWithUsername(username: any) {
+  // const usersRef = collection(firestore, 'users');
+  // const query = usersRef.where('username', '==', username).limit(1);
+
+  const q = query(
+    collection(firestore, "users"),
+    where("username", "==", username),
+    limit(1)
+  );
+  const userDoc = (await getDocs(q)).docs[0];
+  return userDoc;
+}
+
+/**`
+ * Converts a firestore document to JSON
+ * @param  {DocumentSnapshot} doc
+ */
+export function postToJSON(doc: QueryDocumentSnapshot<DocumentData>) {
   const data = doc.data();
   return {
     ...data,
@@ -61,4 +103,15 @@ export {
   signOut,
   useDocumentData,
   getDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+  limit,
+  orderBy,
+  serverTimestamp,
+  setDoc,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
 };

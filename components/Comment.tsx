@@ -14,7 +14,7 @@ interface CommentProp {
   id: Number;
   body: String;
   isRootComment: Boolean;
-  parentId: Number;
+  parentId: Number | null;
   createdAt: Date;
   likes: Number;
   fullName: String;
@@ -75,7 +75,7 @@ const Comment = ({
           </div>
         </div>
       </div>
-      {replying && <CommentForm autoFocus setReplying={setReplying} />}
+      {replying && <CommentForm autoFocus={true} setReplying={setReplying} />}
 
       <div className="children flex">
         <button

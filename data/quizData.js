@@ -5,6 +5,7 @@ export const quizData = [
       "A blockchain is a distributed software network that functions both as a digital ledger and a mechanism enabling the secure transfer of assets without an intermediary. Just as the internet is a technology that facilitates the digital flow of information, blockchain is a technology that facilitates the digital exchange of units of value. Anything from currencies to land titles to votes can be tokenized, stored, and exchanged on a blockchain network.",
     quizQuestions: [
       {
+        qID: 1,
         question: "What is blockchain?",
         answers: [
           { option: "Distributed software network", isCorrect: true, id: 0 },
@@ -14,6 +15,7 @@ export const quizData = [
         ],
       },
       {
+        qID: 2,
         question: "What does blockchain facilitate the flow of?",
         answers: [
           { option: "Units of power", isCorrect: false, id: 0 },
@@ -23,6 +25,7 @@ export const quizData = [
         ],
       },
       {
+        qID: 3,
         question: "Does blockchain require an intermediary?",
         answers: [
           { option: "Yes", isCorrect: false, id: 0 },

@@ -23,27 +23,39 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 
-const PostList = ({ posts }) => {
+type Post = {
+  questionTitle: string;
+  content: string;
+  imageURL: string;
+  heartCount: number;
+  username: string;
+  createdAt: number;
+  slug: string;
+};
+
+type Props = {
+  posts: Post[];
+};
+
+const PostList = ({ posts }: Props) => {
   return (
     <div className="flex flex-col w-11/12 lg:w-5/12">
-      {posts.map((post) => {
-        return <Post post={post} />;
+      {posts.map((post: Post) => {
+        return <Post {...post} key={post.slug} />;
       })}
     </div>
   );
 };
 
-const Post = ({ post }) => {
-  const {
-    questionTitle,
-    content,
-    imageURL,
-    heartCount,
-    username,
-    createdAt,
-    slug,
-  } = post;
-
+const Post = ({
+  questionTitle,
+  content,
+  imageURL,
+  heartCount,
+  username,
+  createdAt,
+  slug,
+}: Post) => {
   const [comments1, setComments1] = useState([]);
   const [loading, setLoading] = useState(false);
 

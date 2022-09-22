@@ -2,11 +2,21 @@ import { useEffect, useState } from "react";
 import img from "../public/assets/images/postphoto.jpg";
 import Image from "next/image";
 
-const CommentForm = ({ autoFocus, setReplying, initialValue = "" }) => {
+type CommentFormProps = {
+  autoFocus: boolean;
+  setReplying: Function;
+  initialValue?: string;
+};
+
+const CommentForm = ({
+  autoFocus,
+  setReplying,
+  initialValue = "",
+}: CommentFormProps) => {
   const [comment, setComment] = useState(initialValue);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     setComment("");
   };

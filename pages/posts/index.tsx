@@ -13,7 +13,21 @@ import { postToJSON } from "../../lib/firebase";
 // Number of posts to be shown
 const LIMIT = 8;
 
-export async function getServerSideProps(context) {
+type Post = {
+  questionTitle: string;
+  content: string;
+  imageURL: string;
+  heartCount: number;
+  username: string;
+  createdAt: number;
+  slug: string;
+};
+
+type Props = {
+  posts: Post[];
+};
+
+export async function getServerSideProps() {
   // const postsQuery = firestore
   //   .collectionGroup('posts')
   //   .where('published', '==', true)
@@ -29,7 +43,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-const PostPage = ({ posts }) => {
+const PostPage = ({ posts }: Props) => {
   console.log(posts);
   return (
     <div className="flex items-center justify-center ">
