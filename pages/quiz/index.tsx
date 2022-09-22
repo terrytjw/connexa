@@ -1,10 +1,12 @@
 import QuizComponent from "../../components/QuizComponent";
 import Rewards from "../../components/Rewards";
 
-export default function QuizPage() {
+const QuizPage = () => {
   return (
     <div className="h-screen flex items-center justify-center">
-      <QuizComponent />
+      <Rewards />
     </div>
   );
-}
+};
+
+export default QuizPage;
