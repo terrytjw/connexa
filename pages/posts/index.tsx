@@ -6,9 +6,9 @@ import {
   limit,
   getDocs,
   orderBy,
-} from "firebase/firestore";
+  postToJSON,
+} from "../../lib/firebase";
 import PostList from "../../components/Posts";
-import { postToJSON } from "../../lib/firebase";
 
 // Number of posts to be shown
 const LIMIT = 8;
@@ -21,6 +21,8 @@ type Post = {
   username: string;
   createdAt: number;
   slug: string;
+  uid: string;
+  displayName: string;
 };
 
 type Props = {
@@ -44,7 +46,6 @@ export async function getServerSideProps() {
 }
 
 const PostPage = ({ posts }: Props) => {
-  console.log(posts);
   return (
     <div className="flex items-center justify-center ">
       <PostList posts={posts} />
