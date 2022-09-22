@@ -9,25 +9,45 @@ import {
 import { comments } from "../data/commentData";
 import { useState } from "react";
 import CommentForm from "./CommentForm";
+import { StringIterator } from "lodash";
 
-interface CommentProp {
-  id: Number;
-  body: String;
-  isRootComment: Boolean;
-  parentId: Number | null;
+type CommentProp = {
+  id: string;
+  message: string;
+  parentId: number | null;
   createdAt: Date;
-  likes: Number;
-  fullName: String;
-}
+  heartCount: number;
+  displayName: string;
+  photoURL: string;
+  slug: string;
+  key: string;
+  uid: string;
+  comments: CommentType[] | undefined;
+};
+
+type CommentType = {
+  id: string;
+  message: string;
+  parentId: number | null;
+  createdAt: Date;
+  heartCount: number;
+  displayName: string;
+  photoURL: string;
+  slug: string;
+};
 
 const Comment = ({
   id,
-  body,
-  isRootComment,
+  message,
   parentId,
   createdAt,
-  likes,
-  fullName,
+  heartCount,
+  displayName,
+  photoURL,
+  slug,
+  key,
+  comments,
+  uid,
 }: CommentProp) => {
   const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
@@ -37,19 +57,21 @@ const Comment = ({
   const [childrenHidden, setChildrenHidden] = useState(false);
   const [replying, setReplying] = useState(false);
 
-  const childComments = comments.filter((comment) => {
-    return comment.parentId === id;
+  const childComments = comments?.filter((comment) => {
+    return comment.parentId?.toString() === id;
   });
 
   return (
     <>
       <div className="comment flex items-center p-3 bg-gray-100 justify-between rounded-xl mt-3">
         <div className="img w-9 h-9 rounded-full overflow-hidden mr-3">
-          <Image src={img} />
+          <img src={photoURL || undefined} />
         </div>
         <div className="comment-content flex flex-col mr-auto">
-          <div className="name font-bold text-sm">{fullName}</div>
-          <div className="message text-sm">{body}</div>
+          <div className="name font-bold text-sm first-letter:uppercase">
+            {displayName}
+          </div>
+          <div className="message text-sm">{message}</div>
         </div>
         <div className="flex flex-col gap-1 justify-between ">
           <div className="date text-xs self-end text-gray-500">6h ago</div>
@@ -70,12 +92,20 @@ const Comment = ({
               <div className="img">
                 <HeartIcon className="w-4 h-4" />
               </div>
-              <div className="number">{likes.toString()}</div>
+              <div className="number">{heartCount.toString()}</div>
             </div>
           </div>
         </div>
       </div>
-      {replying && <CommentForm autoFocus={true} setReplying={setReplying} />}
+      {replying && (
+        <CommentForm
+          autoFocus={true}
+          setReplying={setReplying}
+          slug={slug}
+          parentId={id}
+          uid={uid}
+        />
+      )}
 
       <div className="children flex">
         <button
@@ -95,9 +125,17 @@ const Comment = ({
           </button>
         ) : (
           <div className="grow">
-            {childComments.length !== 0 &&
-              childComments.map((comment) => {
-                return <Comment {...comment} key={comment.id} />;
+            {childComments?.length !== 0 &&
+              childComments?.map((comment) => {
+                return (
+                  <Comment
+                    {...comment}
+                    key={comment.id}
+                    slug={slug}
+                    comments={comments}
+                    uid={uid}
+                  />
+                );
               })}
           </div>
         )}

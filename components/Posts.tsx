@@ -11,12 +11,13 @@ import {
   // ArrowUturnLeftIcon,
   // HeartIcon,
 } from "@heroicons/react/24/outline";
-import { comments } from "../data/commentData";
+// import { comments } from "../data/commentData";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { collection, getFirestore, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth } from "../lib/firebase";
+import CommentForm from "./CommentForm";
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -29,12 +30,25 @@ type Post = {
   imageURL: string;
   heartCount: number;
   username: string;
+  displayName: string;
   createdAt: number;
   slug: string;
+  uid: string;
 };
 
 type Props = {
   posts: Post[];
+};
+
+type CommentType = {
+  id: string;
+  message: string;
+  parentId: number | null;
+  createdAt: Date;
+  heartCount: number;
+  displayName: string;
+  photoURL: string;
+  slug: string;
 };
 
 const PostList = ({ posts }: Props) => {
@@ -55,42 +69,30 @@ const Post = ({
   username,
   createdAt,
   slug,
+  uid,
 }: Post) => {
-  const [comments1, setComments1] = useState([]);
+  const [replying, setReplying] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const ref = auth.currentUser
-    ? collection(
-        getFirestore(),
-        "users",
-        auth.currentUser.uid,
-        "posts",
-        slug,
-        "comments"
-      )
-    : null;
+  const ref =
+    auth.currentUser &&
+    collection(getFirestore(), "users", uid, "posts", slug, "comments");
 
   const postQuery = ref && query(ref, orderBy("createdAt"));
 
   const [querySnapshot] = useCollection(postQuery);
 
-  const comments2 = querySnapshot?.docs.map((doc) => doc.data());
-
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   return () => {
-  //     second;
-  //   };
-  // }, [third]);
+  const comments2 = querySnapshot?.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id } as CommentType;
+  });
 
   const datePosted = new Date(createdAt);
   const timeAgo = Math.floor(
     (new Date().getTime() - datePosted.getTime()) / 1000 / 60 / 60
   );
 
-  const parentComments = comments.filter((comment) => {
-    return comment.isRootComment;
+  const parentComments = comments2?.filter((comment) => {
+    return comment.parentId === null;
   });
 
   return (
@@ -139,7 +141,10 @@ const Post = ({
             <div className="number">1</div>
           </div>
         </div>
-        <div className="comments flex items-center rounded-3xl bg-gray-100 p-3 gap-1 mr-2">
+        <div
+          className="comments flex items-center rounded-3xl bg-gray-100 p-3 gap-1 mr-2"
+          onClick={() => setReplying(true)}
+        >
           <div className="img">
             <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5" />
           </div>
@@ -159,9 +164,25 @@ const Post = ({
         </div>
       </div>
       <div className="comments-section flex flex-col">
-        {parentComments.length !== 0 ? (
-          parentComments.map((comment) => {
-            return <Comment {...comment} key={comment.id} />;
+        {replying && (
+          <CommentForm
+            autoFocus={true}
+            setReplying={setReplying}
+            slug={slug}
+            uid={uid}
+          />
+        )}
+        {parentComments?.length !== 0 ? (
+          parentComments?.map((comment) => {
+            return (
+              <Comment
+                {...comment}
+                key={comment.id}
+                slug={slug}
+                comments={comments2}
+                uid={uid}
+              />
+            );
           })
         ) : (
           <div>Be the first to comment!</div>

@@ -21,6 +21,7 @@ import {
   DocumentData,
   serverTimestamp,
   setDoc,
+  collectionGroup,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -114,4 +115,5 @@ export {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  collectionGroup,
 };
