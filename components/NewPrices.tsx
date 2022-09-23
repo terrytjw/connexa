@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { collection, getFirestore, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth } from "../lib/firebase";
-import * as FaIcons from 'react-icons/fa' 
 
 
 type Crypto = {

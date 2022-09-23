@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { collection, getFirestore, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth } from "../lib/firebase";
-import * as FaIcons from 'react-icons/fa' 
 
 
 type Article = {
@@ -45,7 +44,6 @@ const Article = ({
     <a href={Link}>{Title}</a></u>
     </h3>
     <div className="text-sm flex items-center">
-    <FaIcons.FaClock />
     <span className="flex-1 ml-3 ">{Date}, {Time}</span>
     </div>
   </div>

@@ -5,16 +5,9 @@ import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { UserContext } from "../lib/Context";
 import { useUserData } from "../lib/hooks";
-<<<<<<< Updated upstream
-=======
 import type { AppProps } from "next/app";
-import { collectionGroup } from "firebase/firestore";
-import { getFirestore, query, orderBy, limit, getDocs, postToJSON } from "../lib/firebase";
 
-
->>>>>>> Stashed changes
-
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const userData = useUserData();
 
   return (

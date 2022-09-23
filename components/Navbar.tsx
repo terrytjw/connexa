@@ -1,47 +1,43 @@
-import Link from "next/link";
-import React from "react";
+import { Fragment, useContext } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { UserContext } from "../lib/Context";
+import {
+  auth,
+  googleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "../lib/firebase";
+import UsernameForm from "./UsernameForm";
+import toast from "react-hot-toast";
 import Image from "next/image";
-<<<<<<< Updated upstream
-import Button from "./Button";
-=======
-
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
->>>>>>> Stashed changes
 
 const Navbar = () => {
-  const user = null;
-  const username = null;
-  return (
-    <nav className="h-16 w-screen bg-white fixed top-0 py-0 px-10 z-99">
-      <ul className="flex list-none m-0 p-0 items-center justify-between h-full">
-        <li>
-          <Link href="/">
-            <a className="font-black tracking-widest py-1 px-2 border-2 border-gray-600 rounded hover:bg-gray-200 hover:border-gray-500 transition-all">
-              HOME
-            </a>
-          </Link>
-        </li>
+  const { user, username, isAuthLoading, isUsernameLoading } =
+    useContext(UserContext);
 
-        {username ? (
+  const signInWithGoogle = async () => {
+    await signInWithPopup(auth, googleAuthProvider).catch((error) => {
+      console.error(error);
+    });
+    toast.success("You are logged in.");
+  };
+
+  const signOutGoogle = () => {
+    signOut(auth);
+    toast.success("You are logged out.");
+  };
+
+  return (
+    <>
+      <Disclosure as="nav" className="bg-white">
+        {({ open }) => (
           <>
-<<<<<<< Updated upstream
-            <li>
-              <Link href="/admin">Write Posts</Link>
-            </li>
-            <li>
-              <Link href={`/${username}`}>
-                <Image
-                  src={user?.photoUrl}
-                  width={100}
-                  height={100}
-                  alt="user's profile photo"
-                />
-              </Link>
-            </li>
-=======
             <div className="mx-auto max-w-[110rem] px-2 sm:px-4 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex items-center px-2 lg:px-0">
@@ -116,9 +112,6 @@ const Navbar = () => {
                         >
                           Categories
                         </a>
-
-                       
-                       
                       </div>
                     </div>
 
@@ -215,7 +208,6 @@ const Navbar = () => {
             <Disclosure.Panel className="lg:hidden">
               <div className="space-y-1 px-2 pt-2 pb-3">
                 {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                
                 <Disclosure.Button
                   as="a"
                   href="#"
@@ -228,33 +220,8 @@ const Navbar = () => {
                   href="#"
                   className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                 >
-                  Categories
+                  Category
                 </Disclosure.Button>
-
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-6 py-1 text-base font-small text-black hover:bg-black hover:text-white transition-all"
-                >
-                  Markets
-                </Disclosure.Button>
-
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-6 py-1 text-base font-small text-black hover:bg-black hover:text-white transition-all"
-                >
-                  DeFi
-                </Disclosure.Button>
-
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-6 py-1 text-base font-small text-black hover:bg-black hover:text-white transition-all"
-                >
-                  Gaming & Metaverse
-                </Disclosure.Button>
-                
               </div>
               {user && !isAuthLoading ? (
                 <div className="border-t border-gray-700 pt-4 pb-3">
@@ -320,17 +287,15 @@ const Navbar = () => {
                 </>
               )}
             </Disclosure.Panel>
->>>>>>> Stashed changes
           </>
-        ) : (
-          <li>
-            <Link href="/login">
-              <Button onClick={() => {}}>Login</Button>
-            </Link>
-          </li>
         )}
-      </ul>
-    </nav>
+      </Disclosure>
+      {user ? (
+        username ? null : isUsernameLoading ? null : (
+          <UsernameForm />
+        )
+      ) : null}
+    </>
   );
 };
 

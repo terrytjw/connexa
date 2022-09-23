@@ -1,16 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 import toast from "react-hot-toast";
-<<<<<<< Updated upstream
-import Button from "../components/Button";
-=======
 import NewPost from "../components/NewPost";
 import CryptoFeed from "../components/NewPrices";
 import Categories from "../components/Categories/Categories"
 import NewsArticle from "../components/NewNews"
 import { collectionGroup } from "firebase/firestore";
 import { getFirestore, query, orderBy, limit, getDocs, postToJSON } from "../lib/firebase";
->>>>>>> Stashed changes
 
 type Article = {
   Date: string;
@@ -52,15 +48,11 @@ export async function getServerSideProps() {
 const HomePage = ({articles, crypto_feed}: Props) => 
 {
   return (
-<<<<<<< Updated upstream
-    <div className="bg-slate-200">
-=======
     
     
     <div className="bg-[#faf5f8]">
 
       
->>>>>>> Stashed changes
       <Head>
         <title>Crypto Connect</title>
         <meta
@@ -70,18 +62,6 @@ const HomePage = ({articles, crypto_feed}: Props) =>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-<<<<<<< Updated upstream
-      <div className="mt-16 h-screen">
-        <h1 className="text-3xl font-serif font-bold pt-20 text-center">
-          Welcome to Crypto Connect!
-        </h1>
-        <Button
-          className="m-auto mt-6"
-          onClick={() => toast.success("Hooray!")}
-        >
-          Trigger Toast
-        </Button>
-=======
       <div className="flex justify-between h-screen">
         <div><Categories/></div>
 
@@ -112,7 +92,6 @@ const HomePage = ({articles, crypto_feed}: Props) =>
         
         </div>
 
->>>>>>> Stashed changes
       </div>
 
       <footer>
