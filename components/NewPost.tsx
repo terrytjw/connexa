@@ -22,7 +22,6 @@ const NewPost = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>();
-  const [postUploading, setPostUploading] = useState(false);
 
   const { user, username, isAuthLoading } = useContext(UserContext);
 
@@ -84,6 +83,8 @@ const NewPost = () => {
             slug,
             uid,
             username,
+            displayName: user.displayName,
+            photoURL: auth.currentUser?.photoURL,
             content: description.value || "default content",
             imageURL: "",
             createdAt: serverTimestamp(),
