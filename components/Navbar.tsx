@@ -12,14 +12,20 @@ import {
 import UsernameForm from "./UsernameForm";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import axios from "axios";
+import useSWR from "swr";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+const swrFetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 const Navbar = () => {
   const { user, username, isAuthLoading, isUsernameLoading } =
     useContext(UserContext);
+
+  const { data, error } = useSWR(`/api/getUserProfile/${username}`, swrFetcher);
 
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleAuthProvider).catch((error) => {
@@ -128,15 +134,17 @@ const Navbar = () => {
 
                         <Menu as="div" className="relative ml-4 flex-shrink-0">
                           <div>
-                            <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-white">
+                            <Menu.Button className="flex p-1 rounded-full bg-white border border-gray-400 text-sm text-white">
                               <span className="sr-only">Open user menu</span>
-                              <Image
-                                className="rounded-xl"
-                                src={user.photoURL}
-                                alt="Profile picture"
-                                width={30}
-                                height={30}
-                              />
+                              {data && data.user && (
+                                <Image
+                                  className="rounded-xl"
+                                  src={data.user.photoURL}
+                                  alt="Profile picture"
+                                  width={30}
+                                  height={30}
+                                />
+                              )}
                             </Menu.Button>
                           </div>
                           <Transition
@@ -227,13 +235,15 @@ const Navbar = () => {
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0 mt-2">
-                      <Image
-                        className="rounded-xl"
-                        src={user.photoURL}
-                        alt="Profile picture"
-                        width={35}
-                        height={35}
-                      />
+                      {data && data.user && (
+                        <Image
+                          className="rounded-xl"
+                          src={data.user.photoURL}
+                          alt="Profile picture"
+                          width={35}
+                          height={35}
+                        />
+                      )}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-black">
