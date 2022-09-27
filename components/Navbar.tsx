@@ -1,7 +1,7 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { UserContext } from "../lib/Context";
 import {
   auth,
@@ -12,6 +12,7 @@ import {
 import UsernameForm from "./UsernameForm";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import NotificationList from "./NotificationList";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -124,13 +125,7 @@ const Navbar = () => {
                     {/* Profile dropdown */}
                     {user && !isAuthLoading ? (
                       <>
-                        <button
-                          type="button"
-                          className="mx-4 flex-shrink-0 rounded-full p-1 text-black hover:bg-black hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
+                        <NotificationList />
 
                         <Menu as="div" className="relative ml-4 flex-shrink-0">
                           <div>
@@ -161,10 +156,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <a
                                     href={`/${username}`}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Your Profile
                                   </a>
@@ -174,10 +168,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Settings
                                   </a>
@@ -187,10 +180,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <button
                                     onClick={signOutGoogle}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Sign out
                                   </button>
@@ -253,13 +245,8 @@ const Navbar = () => {
                         tom@example.com
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 rounded-full p-1 text-black hover:bg-black hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+
+                    <NotificationList />
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     <Disclosure.Button
