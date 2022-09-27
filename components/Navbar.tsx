@@ -15,10 +15,7 @@ import Image from "next/image";
 import NotificationList from "./NotificationList";
 import axios from "axios";
 import useSWR from "swr";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import Link from "next/link";
 
 const swrFetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -49,22 +46,16 @@ const Navbar = () => {
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex items-center px-2 lg:px-0">
                   <div className="flex-shrink-0">
-                    <p className="block h-8 w-auto lg:hidden text-black font-bold text-2xl">
-                      connexa
-                    </p>
-                    <p className="hidden h-8 w-auto lg:block text-black font-bold text-2xl">
-                      connexa
-                    </p>
-                    {/* <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  /> */}
+                    <Link href="/">
+                      <a className="block h-8 w-auto lg:hidden text-black font-bold text-2xl">
+                        connexa
+                      </a>
+                    </Link>
+                    <Link href="/">
+                      <a className="hidden h-8 w-auto lg:block text-black font-bold text-2xl">
+                        connexa
+                      </a>
+                    </Link>
                   </div>
                   <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end"></div>
 
