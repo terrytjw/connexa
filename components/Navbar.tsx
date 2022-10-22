@@ -1,7 +1,7 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { UserContext } from "../lib/Context";
 import {
   auth,
@@ -12,14 +12,18 @@ import {
 import UsernameForm from "./UsernameForm";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import NotificationList from "./NotificationList";
+import axios from "axios";
+import useSWR from "swr";
+import Link from "next/link";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+const swrFetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Navbar = () => {
   const { user, username, isAuthLoading, isUsernameLoading } =
     useContext(UserContext);
+
+  const { data, error } = useSWR(`/api/getUserProfile/${username}`, swrFetcher);
 
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleAuthProvider).catch((error) => {
@@ -42,22 +46,16 @@ const Navbar = () => {
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex items-center px-2 lg:px-0">
                   <div className="flex-shrink-0">
-                    <p className="block h-8 w-auto lg:hidden text-black font-bold text-2xl">
-                      connexa
-                    </p>
-                    <p className="hidden h-8 w-auto lg:block text-black font-bold text-2xl">
-                      connexa
-                    </p>
-                    {/* <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  /> */}
+                    <Link href="/">
+                      <a className="block h-8 w-auto lg:hidden text-black font-bold text-2xl">
+                        connexa
+                      </a>
+                    </Link>
+                    <Link href="/">
+                      <a className="hidden h-8 w-auto lg:block text-black font-bold text-2xl">
+                        connexa
+                      </a>
+                    </Link>
                   </div>
                   <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end"></div>
 
@@ -118,25 +116,21 @@ const Navbar = () => {
                     {/* Profile dropdown */}
                     {user && !isAuthLoading ? (
                       <>
-                        <button
-                          type="button"
-                          className="mx-4 flex-shrink-0 rounded-full p-1 text-black hover:bg-black hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
+                        <NotificationList />
 
                         <Menu as="div" className="relative ml-4 flex-shrink-0">
                           <div>
-                            <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-white">
+                            <Menu.Button className="flex p-1 rounded-full bg-white border border-gray-400 text-sm text-white">
                               <span className="sr-only">Open user menu</span>
-                              <Image
-                                className="rounded-xl"
-                                src={user.photoURL}
-                                alt="Profile picture"
-                                width={30}
-                                height={30}
-                              />
+                              {data && data.user && (
+                                <Image
+                                  className="rounded-xl"
+                                  src={data.user.photoURL}
+                                  alt="Profile picture"
+                                  width={30}
+                                  height={30}
+                                />
+                              )}
                             </Menu.Button>
                           </div>
                           <Transition
@@ -153,10 +147,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <a
                                     href={`/${username}`}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Your Profile
                                   </a>
@@ -166,10 +159,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Settings
                                   </a>
@@ -179,10 +171,9 @@ const Navbar = () => {
                                 {({ active }) => (
                                   <button
                                     onClick={signOutGoogle}
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded"
-                                    )}
+                                    className={`
+                                      ${active ? "bg-gray-100" : ""}
+                                      block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-all rounded`}
                                   >
                                     Sign out
                                   </button>
@@ -227,13 +218,15 @@ const Navbar = () => {
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0 mt-2">
-                      <Image
-                        className="rounded-xl"
-                        src={user.photoURL}
-                        alt="Profile picture"
-                        width={35}
-                        height={35}
-                      />
+                      {data && data.user && (
+                        <Image
+                          className="rounded-xl"
+                          src={data.user.photoURL}
+                          alt="Profile picture"
+                          width={35}
+                          height={35}
+                        />
+                      )}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-black">
@@ -243,13 +236,8 @@ const Navbar = () => {
                         tom@example.com
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="ml-auto flex-shrink-0 rounded-full p-1 text-black hover:bg-black hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+
+                    <NotificationList />
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     <Disclosure.Button
