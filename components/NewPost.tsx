@@ -266,7 +266,6 @@ const NewPost = () => {
       </div>
 
       {/* <div className="absolute inset-x-px bottom-0">
-
         <div className="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
           <div className="flex">
             <button
