@@ -10,7 +10,6 @@ import {
   onSnapshot,
 } from "../../lib/firebase";
 import PostList from "../../components/Posts";
-import { useState } from "react";
 
 // Number of posts to be shown
 const LIMIT = 1;
