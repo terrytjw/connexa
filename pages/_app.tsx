@@ -6,16 +6,31 @@ import { Toaster } from "react-hot-toast";
 import { UserContext } from "../lib/Context";
 import { useUserData } from "../lib/hooks";
 import type { AppProps } from "next/app";
+import { AnimatePresence, motion } from "framer-motion";
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
   const userData = useUserData();
 
   return (
-    <UserContext.Provider value={userData}>
-      <Navbar />
-      <Component {...pageProps} />
-      <Toaster />
-    </UserContext.Provider>
+    <AnimatePresence exitBeforeEnter>
+      <motion.div
+        key={router.route}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={{
+          hidden: { x: 500, opacity: 0 },
+          visible: { x: 0, opacity: 1, transition: { duration: 1 } },
+          exit: { x: -500, opacity: 0, transition: { duration: 1 } },
+        }}
+      >
+        <UserContext.Provider value={userData}>
+          <Navbar />
+          <Component {...pageProps} />
+          <Toaster />
+        </UserContext.Provider>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
