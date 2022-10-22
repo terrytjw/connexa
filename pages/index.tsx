@@ -1,9 +1,52 @@
 import Head from "next/head";
 import Image from "next/image";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import NewPost from "../components/NewPost";
 
-const HomePage = () => {
+import {
+  collectionGroup,
+  getFirestore,
+  query,
+  where,
+  limit,
+  getDocs,
+  orderBy,
+  postToJSON,
+  onSnapshot,
+} from "../lib/firebase";
+import PostList from "../components/Posts";
+
+// Number of posts to be shown
+const LIMIT = 2;
+
+type Post = {
+  questionTitle: string;
+  content: string;
+  imageURL: string;
+  heartCount: number;
+  photoURL: string;
+  username: string;
+  createdAt: number;
+  slug: string;
+  uid: string;
+  displayName: string;
+};
+
+type Props = {
+  posts: Post[];
+};
+
+export async function getServerSideProps() {
+  const ref = collectionGroup(getFirestore(), "posts");
+  const postsQuery = query(ref, orderBy("createdAt", "desc"), limit(LIMIT));
+
+  const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
+  return {
+    props: { posts }, // will be passed to the page component as props
+  };
+}
+
+const HomePage = ({ posts }: Props) => {
   return (
     <div className="bg-[#faf5f8]">
       <Head>
@@ -23,6 +66,10 @@ const HomePage = () => {
             Welcome to Connexa!
           </h1>
           <NewPost />
+          <div className="flex items-center justify-center ">
+            <PostList posts={posts} />
+          </div>
+          ;
         </div>
 
         <div className="grow-[2.5]">Right side bar</div>
