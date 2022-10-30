@@ -65,7 +65,7 @@ type CommentType = {
 
 const PostList = ({ posts }: Props) => {
   return (
-    <div className="flex flex-col w-11/12 lg:w-5/12">
+    <div className="m-auto mt-16 flex flex-col w-11/12 lg:w-5/12">
       {posts.map((post: Post) => {
         return <Post {...post} key={post.slug} />;
       })}
@@ -140,7 +140,7 @@ const Post = ({
   };
 
   return (
-    <div className="flex flex-col w-full h-max border border-black rounded-2xl p-5 mb-2">
+    <div className="flex flex-col w-full h-max border border-black rounded-2xl p-5 mb-8">
       <div className="top-row flex items-center justify-between mb-2">
         <div className="profile-pic w-10 h-10 overflow-hidden rounded-full mr-3">
           <img src={photoURL} />
