@@ -65,7 +65,7 @@ const HomePage = ({ posts, articles, price_feed }: Props) => {
 
       <div className="flex justify-between h-screen">
         {/* Left Side bar */}
-        <div className="grow-[2]">
+        <div className="mt-20">
           <Categories />
         </div>
         <div className="border border-x-gray-300 grow-[5.5]">
@@ -76,18 +76,18 @@ const HomePage = ({ posts, articles, price_feed }: Props) => {
           <PostList posts={posts} />
         </div>
         {/* Right side bar */}
-        <div className="grow-[2.5]">
-          <a className="top p-4 text-red-500 font-semibold text-2xl text-center mb-1 leading-none">
+        <div className="mt-20">
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
             Trending News
           </a>
-          <div className="grow-[2.5]">
+          <div>
             <NewsArticle articles={articles} />
           </div>
           <br></br>
-          <a className="top p-4 text-red-500 font-semibold text-2xl text-center mb-1 leading-none">
-            Price Action
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
+            Prices
           </a>
-          <div className="grow-[2.5]">
+          <div>
             <CryptoFeed cryptocurrencies={price_feed} />
           </div>
         </div>

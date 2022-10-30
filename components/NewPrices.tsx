@@ -26,11 +26,23 @@ const CryptoFeed = ({ cryptocurrencies }: Props) => {
 const Crypto = ({ Token, Price, Change, slug }: Crypto) => {
   const [loading, setLoading] = useState(false);
 
+  const changeVal = parseFloat(Change.substring(0, Change.length - 1));
+
   return (
     <div className="p-2 md:p-4">
-      <h3 className=" mb-1 text-m leading-tight sm:leading-normal">
-        {Token}, {Price}, {Change}
-      </h3>
+      <h3 className="font-bold text-lg">{Token}</h3>
+      <h4>
+        <span className="text-lg">{Price}</span>
+        <span
+          className={`ml-2 p-1 border ${
+            changeVal > 0
+              ? `bg-green-100 text-green-600 border-green-600`
+              : `bg-green-100 text-red-600 border-red-600`
+          } rounded`}
+        >
+          +{changeVal}%
+        </span>{" "}
+      </h4>
     </div>
   );
 };
