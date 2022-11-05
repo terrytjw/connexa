@@ -86,6 +86,7 @@ const NewPost = () => {
             displayName: user.displayName,
             photoURL: auth.currentUser?.photoURL,
             content: description.value || "default content",
+            category: selectedCategory,
             imageURL: "",
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),

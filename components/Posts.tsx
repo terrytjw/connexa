@@ -61,6 +61,8 @@ type CommentType = {
   displayName: string;
   photoURL: string;
   slug: string;
+  authorUid: string;
+  username: string;
 };
 
 const PostList = ({ posts }: Props) => {
@@ -192,12 +194,6 @@ const Post = ({
           </div>
           <div className="number">{comments2?.length}</div>
         </div>
-        <div className="views items-center p-3 rounded-3xl bg-gray-100 gap-1 mr-auto hidden lg:flex">
-          <div className="img">
-            <EyeIcon className="w-5 h-5" />
-          </div>
-          <div className="number">20</div>
-        </div>
         <div className="follow-post flex items-center p-3 rounded-3xl bg-gray-100 gap-1">
           <div className="img">
             <BellIcon className="w-5 h-5" />
@@ -211,6 +207,7 @@ const Post = ({
           setState={setReplying}
           slug={slug}
           uid={uid}
+          username={username}
         />
       )}
       <div className="comments-section flex flex-col">
@@ -223,6 +220,7 @@ const Post = ({
                   slug={slug}
                   comments={comments2}
                   uid={uid}
+                  username={username}
                 />
               );
             })

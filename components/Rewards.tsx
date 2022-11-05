@@ -1,9 +1,15 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import { StarIcon } from "@heroicons/react/24/solid";
 
-const Rewards = ({}) => {
+type PointsType = {
+  points: number;
+};
+
+const Rewards = ({ points }: PointsType) => {
+  const percentage = Math.round(points / 300);
+
   return (
-    <div className="w-72 h-36">
+    <div className="w-72 h-36 flex justify-center items-center">
       <div className="rounded-3xl bg-black w-4/5 h-full text-white p-4 flex flex-col justify-around">
         <div className="flex items-center">
           <span className="mr-2">Level 3</span>
@@ -19,9 +25,11 @@ const Rewards = ({}) => {
             <div>Intermediate</div>
           </div>
           <div>
-            <LinearProgress variant="determinate" value={45} />
+            <LinearProgress variant="determinate" value={percentage} />
           </div>
-          <div className="flex justify-end text-gray-400 text-xs">135/300</div>
+          <div className="flex justify-end text-gray-400 text-xs">
+            {points}/300
+          </div>
         </div>
       </div>
     </div>

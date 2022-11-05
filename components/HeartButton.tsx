@@ -22,8 +22,13 @@ const Heart = ({ docRef }: Props) => {
   const [exists, setExists] = useState(false);
 
   const uid = auth.currentUser && auth.currentUser.uid;
+  const authorUid = docRef.path.split("/", 2);
+  const authorPath = "users/" + authorUid[1];
   const path = docRef.path + "/hearts/" + uid;
+
   const heartRef = doc(getFirestore(), path);
+  const authorRef = doc(getFirestore(), authorPath);
+
   onSnapshot(heartRef, (doc) => {
     setExists(doc.exists());
   });
@@ -38,6 +43,7 @@ const Heart = ({ docRef }: Props) => {
     const batch = writeBatch(getFirestore());
 
     batch.update(docRef, { heartCount: increment(1) });
+    batch.update(authorRef, { points: increment(1) });
     batch.set(heartRef, { uid });
 
     await batch.commit();
@@ -48,6 +54,8 @@ const Heart = ({ docRef }: Props) => {
     const batch = writeBatch(getFirestore());
 
     batch.update(docRef, { heartCount: increment(-1) });
+    batch.update(authorRef, { points: increment(-1) });
+
     batch.delete(heartRef);
 
     await batch.commit();

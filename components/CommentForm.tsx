@@ -20,6 +20,7 @@ type CommentFormProps = {
   parentId?: string | null;
   uid: string;
   id?: string;
+  username: string;
 };
 
 const CommentForm = ({
@@ -30,10 +31,12 @@ const CommentForm = ({
   parentId = null,
   uid,
   id,
+  username,
 }: CommentFormProps) => {
   const [comment, setComment] = useState(initialValue);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  console.log("Comment form", username);
 
   const handleUserKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -82,7 +85,9 @@ const CommentForm = ({
       ref &&
         addDoc(ref, {
           displayName: auth.currentUser?.displayName,
+          authorUid: auth.currentUser?.uid,
           photoURL: auth.currentUser?.photoURL,
+          username,
           message: comment,
           parentId,
           createdAt: serverTimestamp(),
