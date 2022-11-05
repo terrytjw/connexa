@@ -1,23 +1,34 @@
 import Head from "next/head";
 import Image from "next/image";
-// import toast from "react-hot-toast";
 import NewPost from "../components/NewPost";
-
+import CryptoFeed from "../components/NewPrices";
+import Categories from "../components/Categories/Categories";
+import NewsArticle from "../components/NewNews";
+import { collectionGroup } from "firebase/firestore";
 import {
-  collectionGroup,
   getFirestore,
   query,
-  where,
+  orderBy,
   limit,
   getDocs,
-  orderBy,
   postToJSON,
-  onSnapshot,
 } from "../lib/firebase";
 import PostList from "../components/Posts";
 
-// Number of posts to be shown
-const LIMIT = 2;
+type Article = {
+  Date: string;
+  Link: string;
+  Time: string;
+  Title: string;
+  slug: string;
+};
+
+type Crypto = {
+  Token: string;
+  Price: string;
+  Change: string;
+  slug: string;
+};
 
 type Post = {
   questionTitle: string;
@@ -33,20 +44,14 @@ type Post = {
 };
 
 type Props = {
+  articles: Article[];
+  price_feed: Crypto[];
   posts: Post[];
 };
 
-export async function getServerSideProps() {
-  const ref = collectionGroup(getFirestore(), "posts");
-  const postsQuery = query(ref, orderBy("createdAt", "desc"), limit(LIMIT));
+const LIMIT = 2;
 
-  const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
-  return {
-    props: { posts }, // will be passed to the page component as props
-  };
-}
-
-const HomePage = ({ posts }: Props) => {
+const HomePage = ({ posts, articles, price_feed }: Props) => {
   return (
     <div className="bg-[#faf5f8]">
       <Head>
@@ -59,20 +64,33 @@ const HomePage = ({ posts }: Props) => {
       </Head>
 
       <div className="flex justify-between h-screen">
-        <div className="grow-[2]">Left side bar</div>
-
+        {/* Left Side bar */}
+        <div className="mt-20">
+          <Categories />
+        </div>
         <div className="border border-x-gray-300 grow-[5.5]">
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>
           <NewPost />
-          <div className="flex items-center justify-center ">
-            <PostList posts={posts} />
-          </div>
-          ;
+          <PostList posts={posts} />
         </div>
-
-        <div className="grow-[2.5]">Right side bar</div>
+        {/* Right side bar */}
+        <div className="mt-20">
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
+            Trending News
+          </a>
+          <div>
+            <NewsArticle articles={articles} />
+          </div>
+          <br></br>
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
+            Prices
+          </a>
+          <div>
+            <CryptoFeed cryptocurrencies={price_feed} />
+          </div>
+        </div>
       </div>
 
       <footer>
@@ -92,3 +110,24 @@ const HomePage = ({ posts }: Props) => {
 };
 
 export default HomePage;
+
+export async function getServerSideProps() {
+  // get post data
+  const postRef = collectionGroup(getFirestore(), "posts");
+  const postsQuery = query(postRef, orderBy("createdAt", "desc"), limit(LIMIT));
+  const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
+
+  // get articles data
+  const articleRef = collectionGroup(getFirestore(), "news");
+  const articlesQuery = query(articleRef);
+  const articles = (await getDocs(articlesQuery)).docs.map((doc) => doc.data());
+
+  // get price data
+  const ref_price = collectionGroup(getFirestore(), "prices");
+  const priceQuery = query(ref_price);
+  const price_feed = (await getDocs(priceQuery)).docs.map((doc) => doc.data());
+
+  return {
+    props: { posts, articles, price_feed },
+  };
+}
