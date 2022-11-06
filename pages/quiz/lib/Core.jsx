@@ -210,7 +210,7 @@ const Core = function ({
     answerSelectionType = answerSelectionType || "single";
 
     return answers.map((answer, index) => (
-      <div className="rounded-md px-1 py-2 font-medium text-grey hover:bg-black hover:text-white transition-all">
+      <div className="rounded-md mb-4 px-4 py-2 font-medium text-grey border border-black hover:bg-black hover:text-white transition-all">
         <Fragment key={index}>
           {buttons[index] !== undefined ? (
             <button
@@ -313,11 +313,13 @@ const Core = function ({
   return (
     <div className="questionWrapper">
       {!endQuiz && (
-        <div className="p-5 flex flex-col w-96 h-96 ">
+        <div className="mt-40 p-20 text-center border border-gray-300 shadow-lg rounded-lg">
           <div>
             {appLocale.question} {currentQuestionIndex + 1}:
           </div>
-          <div className="font-bold mb-5">{question.question}</div>
+          <div className="text-2xl mt-2 font-bold mb-5">
+            {question.question}
+          </div>
           {question && renderAnswers(question, buttons)}
           {(showNextQuestionButton || allowNavigation) && (
             <div>

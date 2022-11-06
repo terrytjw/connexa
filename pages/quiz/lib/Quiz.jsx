@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import Core from "./Core";
 import { setDoc, getFirestore, getDoc } from "firebase/firestore";
 import { auth, doc } from "../../../lib/firebase";
+import doggoImg from "../../../public/images/doggo.jpg";
+import vomitImg from "../../../public/images/vomit.jpg";
+import Image from "next/image";
 
 const defaultLocale = {
   landingHeaderText: "<questionLength> Questions",
@@ -69,33 +72,51 @@ const Quiz = function ({
   if (completed == "True") {
     return (
       <div>
-        <div className="font-black text-xl text-center mb-3">
-          Done for the day
+        <div className="mt-40 p-20 text-center border border-gray-300 shadow-lg rounded-lg">
+          <Image
+            className="rounded-full"
+            src={vomitImg}
+            width={100}
+            height={100}
+          />
+          <div className="font-semibold mt-2">
+            You've completed the quiz for the day. <br /> Come back tomorrow!
+          </div>
         </div>
-        <div className="font-bold mb-5">Come back tomorrow!</div>
+        <div className="font-bold mb-5"></div>
       </div>
     );
   } else {
     return (
       <div>
         {!start && (
-          <div className="text-center">
-            <button onClick={() => setStart(true)}></button>
-            <div className="font-black text-xl text-center mb-3">
+          <div className="mt-40 p-20 text-center border border-gray-300 shadow-lg rounded-lg">
+            <Image
+              className="rounded-full"
+              src={doggoImg}
+              width={130}
+              height={100}
+            />
+            <div className="font-black text-4xl text-center mb-3">
               Daily Quiz
             </div>
-            <div className="font-bold mb-5">Explore more about crypto!</div>
-            <div>
-              Total of :{" "}
-              {appLocale.landingHeaderText.replace(
-                "<questionLength>",
-                nrOfQuestions
-              )}
+            <div className="text-xl font-bold mb-5">
+              Explore more about crypto!
+            </div>
+            <div className="text-lg">
+              Total of{" "}
+              <span className="underline">
+                {appLocale.landingHeaderText.replace(
+                  "<questionLength>",
+                  nrOfQuestions
+                )}
+              </span>{" "}
+              for today.
             </div>
             <br></br>
             <div>
               <button
-                className="block m-auto text-center border border-black rounded-md px-4 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
+                className="block m-auto text-center border border-black rounded-md px-12 py-3 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
                 onClick={() => setStart(true)}
               >
                 Let's go!
