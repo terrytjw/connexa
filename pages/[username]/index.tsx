@@ -139,7 +139,7 @@ const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
           </div>
         </div>
 
-        <TabGroup posts={posts} comments={comments} />
+        <TabGroup posts={posts} />
       </div>
 
       <Transition appear show={isEditingProfile} as={Fragment}>
