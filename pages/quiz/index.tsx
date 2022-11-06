@@ -1,12 +1,23 @@
-import QuizComponent from "../../components/QuizComponent";
-import Rewards from "../../components/Rewards";
+import { useState, useContext } from "react";
+import Quiz from '../quiz/lib/Quiz';
+import quiz from '../quiz/questions/quiz';
 
-const QuizPage = () => {
-  return (
-    <div className="h-screen flex items-center justify-center">
-      <Rewards />
-    </div>
-  );
-};
 
-export default QuizPage;
+const DailyQuiz = function () {
+    const [quizResult, setQuizResult] = useState();
+
+    return( 
+        <div className="flex flex-row min-h-screen justify-center items-center">
+        
+
+        <Quiz
+            quiz={quiz}
+            onComplete={setQuizResult}
+            disableSynopsis
+            />
+
+        </div>
+    )
+}
+
+export default DailyQuiz;

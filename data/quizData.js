@@ -34,6 +34,33 @@ export const quizData = [
           { option: "Doesn't matter", isCorrect: false, id: 3 },
         ],
       },
+
+      {
+        qID: 4,
+        question: "What is cryptocurrency?",
+        answers: [
+          { option: "Encrypted currency of a certain state", isCorrect: false, id: 0 },
+          { option: "A type of digital currency", isCorrect: false, id: 1 },
+          { option: "Bitcoin", isCorrect: true, id: 2 },
+          { option: "Doesn't Hackers' secret money", isCorrect: false, id: 3 },
+        ],
+      },
+
+
+      {
+        qID: 5,
+        question: "Which cryptocurrency was the most expensive at the end of 2017?",
+        answers: [
+          { option: "Ethereum", isCorrect: false, id: 0 },
+          { option: "Dash", isCorrect: false, id: 1 },
+          { option: "Bitcoin", isCorrect: true, id: 2 },
+          { option: "Dogecoin", isCorrect: false, id: 3 },
+        ],
+      },
+
+
+
+
     ],
   },
 ];

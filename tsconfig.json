@@ -22,7 +22,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx", "pages/quiz/docs/quiz.jsx", "pages/quiz/lib/core-components/helpers.jsx", "pages/quiz/lib/core-components/Explanation.jsx", "pages/quiz/lib/Core.jsx", "pages/quiz/lib/Locale.jsx", "pages/quiz/lib/Quiz.jsx", "pages/quiz/docs/quiz.js"
   ],
   "exclude": [
     "node_modules"

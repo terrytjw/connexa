@@ -95,11 +95,25 @@ const Navbar = () => {
                 </div>
                 <div className="hidden lg:ml-4 lg:block">
                   <div className="flex items-center">
+
+                  <div className="hidden lg:ml-6 lg:block">
+                      <div className="flex space-x-4">
+                        {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
+                        <a
+                          href="quiz"
+                          className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
+                        >
+                          Quiz
+                        </a>
+                      </div>
+                    </div>
+
+                    
                     <div className="hidden lg:ml-6 lg:block">
                       <div className="flex space-x-4">
                         {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                         <a
-                          href="#"
+                          href="leaderboard"
                           className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
                         >
                           Leaderboard
@@ -201,7 +215,7 @@ const Navbar = () => {
                 {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                 <Disclosure.Button
                   as="a"
-                  href="#"
+                  href="leaderboard"
                   className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                 >
                   Leaderboard
