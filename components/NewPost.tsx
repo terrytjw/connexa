@@ -18,7 +18,11 @@ import {
 } from "../lib/firebase";
 import Loader from "./Loader";
 
-const NewPost = () => {
+type Props = {
+  setCategory: any;
+};
+
+const NewPost = ({ setCategory }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>();
@@ -101,6 +105,7 @@ const NewPost = () => {
           try {
             await setDoc(slugRef, data);
             toast.success("Question posted!");
+            setCategory("all");
           } catch (error) {
             toast.error("Question posting error!");
           }

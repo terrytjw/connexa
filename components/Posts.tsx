@@ -29,6 +29,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import CommentForm from "./CommentForm";
 import HeartButton from "./HeartButton";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -68,7 +69,7 @@ type CommentType = {
 
 const PostList = ({ posts }: Props) => {
   return (
-    <div className="m-auto mt-16 flex flex-col w-11/12 lg:w-5/12">
+    <div className="m-auto mt-16 flex flex-col items-center w-4/5 ">
       {posts.map((post: Post) => {
         return <Post {...post} key={post.slug} />;
       })}
@@ -146,14 +147,14 @@ const Post = ({
   };
 
   return (
-    <div className="flex flex-col w-full h-max border border-black rounded-2xl p-5 mb-8">
+    <div className="flex flex-col w-full h-max shadow-lg rounded-2xl p-5 mb-8 bg-white">
       <div className="top-row flex items-center justify-between mb-2">
         <div className="profile-pic w-10 h-10 overflow-hidden rounded-full mr-3">
           <img src={photoURL} />
         </div>
         <div className="flex flex-col mr-auto">
           <div className="text-lg font-semibold first-letter:uppercase ">
-            {username}
+            <Link href={`/${username}`}>{username}</Link>
           </div>
           <div className="text-xs text-gray-400">{timeAgo}</div>
         </div>
@@ -162,15 +163,15 @@ const Post = ({
             {category[0].toUpperCase() + category.substring(1)}
           </div>
         </div>
-        <div className="save-button rounded-full p-3 bg-blue-100 ml-3">
+        {/* <div className="save-button rounded-full p-3 bg-blue-100 ml-3">
           <BookmarkIcon className="w-5 h-5" />
-        </div>
+        </div> */}
       </div>
       <div className="title font-bold text-lg mb-1">{questionTitle}</div>
       <div className="content mb-3">{content}</div>
       {imageURL && (
         <div className="picture rounded overflow-hidden mb-3 w-max max-w-full">
-          <img src={imageURL} />
+          <img src={imageURL} alt="profile photo" />
         </div>
       )}
       <div className="options flex text-sm items-center justify-between mb-3">

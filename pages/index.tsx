@@ -50,13 +50,15 @@ type Props = {
   // posts: Post[];
 };
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 const HomePage = ({ articles, price_feed }: Props) => {
   const [category, setCategory] = useState("all");
   const [posts, setPosts] = useState<any>([]);
+  const [numberPosts, setNumberPosts] = useState(1);
 
   useEffect(() => {
+    console.log("Acitvated in index");
     const postRef = collectionGroup(getFirestore(), "posts");
     const postsQuery =
       category !== "all"
@@ -64,9 +66,13 @@ const HomePage = ({ articles, price_feed }: Props) => {
             postRef,
             where("category", "==", category),
             orderBy("createdAt", "desc"),
-            limit(LIMIT)
+            limit(numberPosts * LIMIT)
           )
-        : query(postRef, orderBy("createdAt", "desc"), limit(LIMIT));
+        : query(
+            postRef,
+            orderBy("createdAt", "desc"),
+            limit(numberPosts * LIMIT)
+          );
     const unsubscribe = onSnapshot(postsQuery, (querySnapshot) => {
       const postSnapshot = querySnapshot.docs;
       const data = postSnapshot.map(postToJSON);
@@ -76,14 +82,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
       });
       setPosts(postlist);
     });
-    // const snapshot = (await getDocs(postsQuery)).docs.map(postToJSON);
-    // const postlist: Post[] = [];
-    // snapshot.forEach((doc) => {
-    //   postlist.push(doc);
-    // });
-    // setPosts(postlist);
-    // getPosts();
-  }, [category]);
+  }, [category, numberPosts]);
 
   return (
     <div className="bg-[#faf5f8]">
@@ -99,14 +98,26 @@ const HomePage = ({ articles, price_feed }: Props) => {
       <div className="flex justify-between">
         {/* Left Side bar */}
         <div className="mt-20 grow-[1]">
-          <Categories category={category} setCategory={setCategory} />
+          <Categories
+            category={category}
+            setCategory={setCategory}
+            setNumberPosts={setNumberPosts}
+          />
         </div>
         <div className="border border-x-gray-300 grow-[6.5]">
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>
-          <NewPost />
-          <PostList posts={posts} />
+          <NewPost setCategory={setCategory} />
+          <div className="grow-[1] flex flex-col items-center">
+            <PostList posts={posts} />
+            <button
+              className="mb-5 border w-max p-5 rounded-xl hover:-translate-y-0.5 transition-all hover:bg-purple-200"
+              onClick={() => setNumberPosts((prev) => prev + 1)}
+            >
+              Load more posts!
+            </button>
+          </div>
         </div>
         {/* Right side bar */}
         <div className="pl-8 mt-20 w-[30rem]">

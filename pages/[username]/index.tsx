@@ -4,6 +4,8 @@ import Image from "next/image";
 import {
   auth,
   doc,
+  firestore,
+  getDoc,
   getDownloadURL,
   getFirestore,
   ref,
@@ -28,7 +30,20 @@ type UserProfilePageProps = {
 
 const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
   const router = useRouter();
-  console.log("IN PROFILE PAGE USER DATA", comments);
+  const [currentUser, setCurrentUser] = useState<any>(undefined);
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      const userRef = "users/" + auth.currentUser.uid;
+
+      const userDoc = doc(firestore, userRef);
+
+      getDoc(userDoc).then((doc) => {
+        setCurrentUser(doc.data());
+      });
+    }
+  }, [auth.currentUser]);
+
   const numberOfPoints = user.points || 0;
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -130,12 +145,14 @@ const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
             <div className="flex justify-center mb-4">
               <Rewards points={numberOfPoints} />
             </div>
-            <button
-              onClick={() => setIsEditingProfile(true)}
-              className="mx-12 p-1 font-medium border border-black rounded-3xl hover:bg-black hover:text-white transition-all"
-            >
-              Edit profile
-            </button>
+            {currentUser?.username === user.username && (
+              <button
+                onClick={() => setIsEditingProfile(true)}
+                className="mx-12 p-1 font-medium border border-black rounded-3xl hover:bg-black hover:text-white transition-all"
+              >
+                Edit profile
+              </button>
+            )}
           </div>
         </div>
 
@@ -224,13 +241,13 @@ const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
                         type="displayName"
                         name="displayName"
                         id="displayName"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         value={displayName}
                         onChange={handleDisplayName}
                       />
                     </div>
                   </div>
-                  <div>
+                  {/* <div>
                     <label
                       htmlFor="username"
                       className="block text-sm font-medium text-gray-700"
@@ -247,12 +264,12 @@ const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
                         onChange={handleUsername}
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-gray-400 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-gray-400 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 mr-2"
                       onClick={() => setIsEditingProfile(false)}
                     >
                       Cancel
