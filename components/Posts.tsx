@@ -46,6 +46,7 @@ type Post = {
   createdAt: number;
   slug: string;
   uid: string;
+  category: string;
 };
 
 type Props = {
@@ -85,6 +86,7 @@ const Post = ({
   createdAt,
   slug,
   uid,
+  category,
 }: Post) => {
   const [replying, setReplying] = useState(false);
   const [hearts, setHearts] = useState(heartCount);
@@ -115,12 +117,14 @@ const Post = ({
   let timeAgo: string;
 
   const datePosted = new Date(createdAt);
-  const minutesAgo = Math.floor(
+  let minutesAgo = Math.floor(
     (new Date().getTime() - datePosted.getTime()) / 1000 / 60
   );
   const hoursAgo = Math.floor(
     (new Date().getTime() - datePosted.getTime()) / 1000 / 60 / 60
   );
+
+  minutesAgo = minutesAgo < 0 ? 0 : minutesAgo;
 
   timeAgo =
     minutesAgo < 60
@@ -154,8 +158,9 @@ const Post = ({
           <div className="text-xs text-gray-400">{timeAgo}</div>
         </div>
         <div className="tags flex gap-2">
-          <div className="p-2 rounded border bg-purple-200">Tag 1</div>
-          <div className="p-2 rounded border bg-gray-300">Tag 2</div>
+          <div className="p-2 rounded-lg   border bg-purple-200">
+            {category[0].toUpperCase() + category.substring(1)}
+          </div>
         </div>
         <div className="save-button rounded-full p-3 bg-blue-100 ml-3">
           <BookmarkIcon className="w-5 h-5" />

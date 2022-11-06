@@ -25,6 +25,7 @@ type Post = {
   slug: string;
   uid: string;
   displayName: string;
+  category: string;
 };
 
 type Props = {
