@@ -7,8 +7,12 @@ const DailyQuiz = function () {
 
   return (
     <div className="flex flex-row min-h-screen justify-center items-center">
-      {/* @ts-ignore */}
-      <Quiz quiz={quiz} onComplete={setQuizResult} disableSynopsis />
+      <Quiz
+        quiz={quiz}
+        onComplete={setQuizResult}
+        disableSynopsis
+        onQuestionSubmit={() => console.log("question submitted")}
+      />
     </div>
   );
 };
