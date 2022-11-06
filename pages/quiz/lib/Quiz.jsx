@@ -79,7 +79,7 @@ const Quiz = function ({
     return (
       <div>
         {!start && (
-          <div>
+          <div className="text-center">
             <button onClick={() => setStart(true)}></button>
             <div className="font-black text-xl text-center mb-3">
               Daily Quiz
@@ -93,8 +93,13 @@ const Quiz = function ({
               )}
             </div>
             <br></br>
-            <div className="rounded-md px-1 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all">
-              <button onClick={() => setStart(true)}>Let's go!</button>
+            <div>
+              <button
+                className="block m-auto text-center border border-black rounded-md px-4 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
+                onClick={() => setStart(true)}
+              >
+                Let's go!
+              </button>
             </div>
           </div>
         )}

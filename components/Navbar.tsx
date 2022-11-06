@@ -165,7 +165,7 @@ const Navbar = () => {
                                   </a>
                                 )}
                               </Menu.Item>
-                              <Menu.Item>
+                              {/* <Menu.Item>
                                 {({ active }) => (
                                   <a
                                     href="#"
@@ -176,7 +176,7 @@ const Navbar = () => {
                                     Settings
                                   </a>
                                 )}
-                              </Menu.Item>
+                              </Menu.Item> */}
                               <Menu.Item>
                                 {({ active }) => (
                                   <button
@@ -257,13 +257,13 @@ const Navbar = () => {
                     >
                       Your Profile
                     </Disclosure.Button>
-                    <Disclosure.Button
+                    {/* <Disclosure.Button
                       as="a"
                       href="#"
                       className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-black hover:text-white transition-all"
                     >
                       Settings
-                    </Disclosure.Button>
+                    </Disclosure.Button> */}
                     <Disclosure.Button
                       as="a"
                       onClick={signOutGoogle}
