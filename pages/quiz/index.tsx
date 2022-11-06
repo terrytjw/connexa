@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import Quiz from "../quiz/lib/Quiz";
-import quiz from "../quiz/questions/quiz";
+import quiz from "../../data/quizData";
 
 const DailyQuiz = function () {
   const [quizResult, setQuizResult] = useState();

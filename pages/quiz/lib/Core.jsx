@@ -5,8 +5,11 @@ import React, {
   Fragment,
   useContext,
 } from "react";
-import { checkAnswer, selectAnswer } from "./core-components/helpers";
-import Explanation from "./core-components/Explanation";
+import {
+  checkAnswer,
+  selectAnswer,
+} from "../../../lib/core-components/helpers";
+import Explanation from "../../../lib/core-components/Explanation";
 import {
   setDoc,
   getFirestore,
