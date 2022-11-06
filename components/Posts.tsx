@@ -2,14 +2,9 @@ import Image from "next/image";
 import img from "../public/assets/images/postphoto.jpg";
 // import ethimg from "../public/assets/images/eth.jpg";
 import {
-  BookmarkIcon,
-  HandThumbUpIcon,
-  HandThumbDownIcon,
   ChatBubbleOvalLeftEllipsisIcon,
-  EyeIcon,
+  ShareIcon,
   BellIcon,
-  // ArrowUturnLeftIcon,
-  // HeartIcon,
 } from "@heroicons/react/24/outline";
 // import { comments } from "../data/commentData";
 import Comment from "./Comment";
@@ -146,11 +141,18 @@ const Post = ({
     setReplying((prev) => !prev);
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`localhost:3000/${username}/${slug}`);
+    toast.success("Successfully copied to clipboard!");
+  };
+
   return (
     <div className="flex flex-col w-full h-max border border-gray-200 shadow-lg rounded-2xl p-5 mb-8 bg-white">
       <div className="top-row flex items-center justify-between mb-2">
         <div className="profile-pic w-10 h-10 overflow-hidden rounded-full mr-3">
-          <img src={photoURL} />
+          {/* <img src={photoURL} /> */}
+
+          <Image src={photoURL} width={50} height={50} />
         </div>
         <div className="flex flex-col mr-auto">
           <div className="text-lg font-semibold first-letter:uppercase ">
@@ -171,7 +173,7 @@ const Post = ({
       <div className="content mb-3">{content}</div>
       {imageURL && (
         <div className="picture rounded overflow-hidden mb-3 w-max max-w-full">
-          <img src={imageURL} alt="profile photo" />
+          <img src={imageURL} />
         </div>
       )}
       <div className="options flex text-sm items-center ml-auto mb-3">
@@ -200,12 +202,15 @@ const Post = ({
           </div>
           <div className="number">{comments2?.length}</div>
         </div>
-        {/* <div className="follow-post flex items-center p-3 rounded-3xl bg-gray-100 gap-1">
+        <div
+          className="follow-post flex items-center p-3 rounded-3xl bg-gray-100 gap-1 cursor-pointer"
+          onClick={handleCopy}
+        >
           <div className="img">
-            <BellIcon className="w-5 h-5" />
+            <ShareIcon className="w-5 h-5" />
           </div>
-          <div className="text">Follow this post</div>
-        </div> */}
+          <div className="text">Share</div>
+        </div>
       </div>
       {replying && (
         <CommentForm

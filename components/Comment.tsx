@@ -192,7 +192,7 @@ const Comment = ({
         ) : (
           <>
             <div className="img h-9 w-9 rounded-full overflow-hidden mr-3 flex-none">
-              <img src={photoURL} />
+              <Image src={photoURL} width={50} height={50} />
             </div>
             <div className="flex flex-col flex-grow">
               <div className="comment-content flex w-full mr-auto items-center justify-between">

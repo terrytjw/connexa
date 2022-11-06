@@ -129,11 +129,12 @@ const NewPost = ({ setCategory }: Props) => {
   };
 
   return !isExpanded ? (
-    <div className="m-auto p-2 w-[80%] flex justify-between items-center bg-white rounded-lg border border-gray-300 shadow">
-      <div className="ml-4 text-gray-500">What am I wondering today?</div>
-      <Button className="w-20" onClick={expandQuestionForm}>
-        Ask
-      </Button>
+    <div
+      className="m-auto p-2 w-[80%] flex justify-between items-center bg-white rounded-lg border border-gray-300 shadow cursor-text"
+      onClick={expandQuestionForm}
+    >
+      <div className="ml-4 text-gray-500 ">What am I wondering today?</div>
+      <Button className="w-20">Ask</Button>
     </div>
   ) : (
     <form onSubmit={handleSubmit} className="relative m-auto w-[80%]">
@@ -147,6 +148,7 @@ const NewPost = ({ setCategory }: Props) => {
           id="questionTitle"
           className="p-4 pt-2.5 block w-full text-lg font-medium placeholder-gray-400 border-0 border-b border-gray-300 focus:border-gray-300"
           placeholder="Ask a question"
+          autoFocus={true}
         />
         <label htmlFor="description" className="sr-only">
           Description
@@ -271,7 +273,7 @@ const NewPost = ({ setCategory }: Props) => {
 
           <div className="block sm:inline-flex">
             <button
-              className="items-center rounded-md border px-4 py-2 text-sm font-medium text-black hover:border-gray-700 transition-all focus:outline-none"
+              className="items-center mr-2 rounded-md border px-4 py-2 text-sm font-medium text-black hover:border-gray-700 transition-all focus:outline-none"
               onClick={handleCancel}
             >
               Cancel

@@ -1,19 +1,41 @@
 // the post page bound to a specific username
-import { getDoc, firestore, getUserWithUsername } from "../../lib/firebase";
+import {
+  getDoc,
+  firestore,
+  getUserWithUsername,
+  doc,
+  getPostWithUsernameAndSlug,
+} from "../../lib/firebase";
 import { GetServerSideProps } from "next";
 import React from "react";
-import { getUserProfileData } from "../api/getUserProfile/[username]";
-import { User } from "../../types";
+import PostList from "../../components/Posts";
+import Link from "next/link";
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 
 type PostPageProps = {
-  user: User;
-  posts: any;
-  comments: any;
-  userDoc: any;
+  post: any;
 };
-const PostPage = ({ userDoc }: PostPageProps) => {
-  console.log(userDoc);
-  return <div>PostPage</div>;
+
+const PostPage = ({ post }: PostPageProps) => {
+  const test = post.post;
+  const singlepost = [];
+  singlepost.push(test);
+  console.log("SinglePOST", singlepost);
+  return (
+    <div className="w-full flex p-10 justify-around relative">
+      <div className="absolute top-10 left-10 cursor-pointer transition-all hover:-translate-x-1">
+        <Link href="/">
+          <div className="flex gap-2 items-center">
+            <ArrowUturnLeftIcon className="w-5 h-5" />
+            Return to Home
+          </div>
+        </Link>
+      </div>
+      <div className="w-3/5">
+        <PostList posts={singlepost} />
+      </div>
+    </div>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -21,13 +43,10 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const { username, slug } = urlQuery;
 
-  const userDoc = await getUserWithUsername(username);
-
-  // const postPath = "users/" + username + "/posts/" + slug;
-  // const postDoc = await getDoc(firestore, postPath);
+  const post = await getPostWithUsernameAndSlug(username, slug);
 
   return {
-    props: { userDoc },
+    props: { post },
   };
 };
 
