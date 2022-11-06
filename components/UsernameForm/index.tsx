@@ -1,9 +1,16 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "../../lib/Context";
-import { doc, getFirestore, writeBatch, getDoc } from "../../lib/firebase";
+import {
+  doc,
+  getFirestore,
+  writeBatch,
+  getDoc,
+  serverTimestamp,
+} from "../../lib/firebase";
 import { debounce } from "lodash";
 import UsernameMessage from "./UsernameMessage";
 import Button from "../Button";
+import { notificationTypes } from "../../constants";
 
 const UsernameForm = () => {
   const [formValue, setFormValue] = useState("");
@@ -18,6 +25,13 @@ const UsernameForm = () => {
     // Create refs for both documents
     const userDoc = doc(getFirestore(), "users", user.uid);
     const usernameDoc = doc(getFirestore(), "usernames", formValue);
+    const notificationDoc = doc(
+      getFirestore(),
+      "users",
+      user.uid,
+      "notifications",
+      notificationTypes.welcome
+    );
 
     // Commit both docs together as a batch write.
     const batch = writeBatch(getFirestore());
@@ -27,6 +41,12 @@ const UsernameForm = () => {
       displayName: user.displayName,
     });
     batch.set(usernameDoc, { uid: user.uid });
+    batch.set(notificationDoc, {
+      from: "connexa",
+      to: formValue,
+      createdAt: serverTimestamp(),
+      content: "Welcome to connexa, the community forum for crypto degens.",
+    });
 
     await batch.commit();
   };

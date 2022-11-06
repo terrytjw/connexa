@@ -96,6 +96,15 @@ export function postToJSON(doc: QueryDocumentSnapshot<DocumentData>) {
   };
 }
 
+export function notificationToJSON(doc: QueryDocumentSnapshot<DocumentData>) {
+  const data = doc.data();
+  return {
+    ...data,
+    // Gotcha! firestore timestamp NOT serializable to JSON. Must convert to milliseconds
+    createdAt: data?.createdAt.toMillis() || 0,
+  };
+}
+
 export {
   useAuthState,
   doc,

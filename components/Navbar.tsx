@@ -24,6 +24,12 @@ const Navbar = () => {
     useContext(UserContext);
 
   const { data, error } = useSWR(`/api/getUserProfile/${username}`, swrFetcher);
+  const { data: notificationData, error: notificationError } = useSWR(
+    `/api/notifications/${username}`,
+    swrFetcher
+  );
+
+  console.log("notificationData", notificationData);
 
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleAuthProvider).catch((error) => {
@@ -116,7 +122,7 @@ const Navbar = () => {
                     {/* Profile dropdown */}
                     {user && !isAuthLoading ? (
                       <>
-                        <NotificationList />
+                        <NotificationList notifications={notificationData} />
 
                         <Menu as="div" className="relative ml-4 flex-shrink-0">
                           <div>
@@ -237,7 +243,7 @@ const Navbar = () => {
                       </div>
                     </div>
 
-                    <NotificationList />
+                    <NotificationList notifications={notificationData} />
                   </div>
                   <div className="mt-3 space-y-1 px-2">
                     <Disclosure.Button
