@@ -99,8 +99,7 @@ const Navbar = () => {
                 </div>
                 <div className="hidden lg:ml-4 lg:block">
                   <div className="flex items-center">
-
-                  <div className="hidden lg:ml-6 lg:block">
+                    <div className="hidden lg:ml-6 lg:block">
                       <div className="flex space-x-4">
                         {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                         <a
@@ -112,7 +111,6 @@ const Navbar = () => {
                       </div>
                     </div>
 
-                    
                     <div className="hidden lg:ml-6 lg:block">
                       <div className="flex space-x-4">
                         {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
@@ -121,12 +119,6 @@ const Navbar = () => {
                           className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
                         >
                           Leaderboard
-                        </a>
-                        <a
-                          href="#"
-                          className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
-                        >
-                          Categories
                         </a>
                       </div>
                     </div>
