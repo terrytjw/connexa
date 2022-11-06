@@ -105,7 +105,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>
-          <NewPost />
+          <NewPost setCategory={setCategory} />
           <PostList posts={posts} />
         </div>
         {/* Right side bar */}

@@ -16,12 +16,15 @@ import NotificationList from "./NotificationList";
 import axios from "axios";
 import useSWR from "swr";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const swrFetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Navbar = () => {
   const { user, username, isAuthLoading, isUsernameLoading } =
     useContext(UserContext);
+
+  const router = useRouter();
 
   const { data, error } = useSWR(`/api/getUserProfile/${username}`, swrFetcher);
 
@@ -34,6 +37,7 @@ const Navbar = () => {
 
   const signOutGoogle = () => {
     signOut(auth);
+    router.push("/");
     toast.success("You are logged out.");
   };
 
