@@ -85,7 +85,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
   }, [category, numberPosts]);
 
   return (
-    <div className="bg-[#faf5f8]">
+    <div className="">
       <Head>
         <title>Connexa</title>
         <meta
@@ -101,6 +101,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
           <Categories
             category={category}
             setCategory={setCategory}
+            // @ts-ignore
             setNumberPosts={setNumberPosts}
           />
         </div>
@@ -108,6 +109,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>
+          {/* @ts-ignore */}
           <NewPost setCategory={setCategory} />
           <div className="grow-[1] flex flex-col items-center">
             <PostList posts={posts} />
@@ -120,7 +122,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
           </div>
         </div>
         {/* Right side bar */}
-        <div className="pl-8 mt-20 w-[30rem]">
+        <div className="pl-2 mt-20 w-[30rem]">
           <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
             Trending News
           </a>

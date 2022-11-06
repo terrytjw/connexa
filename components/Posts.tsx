@@ -147,7 +147,7 @@ const Post = ({
   };
 
   return (
-    <div className="flex flex-col w-full h-max shadow-lg rounded-2xl p-5 mb-8 bg-white">
+    <div className="flex flex-col w-full h-max border border-gray-200 shadow-lg rounded-2xl p-5 mb-8 bg-white">
       <div className="top-row flex items-center justify-between mb-2">
         <div className="profile-pic w-10 h-10 overflow-hidden rounded-full mr-3">
           <img src={photoURL} />
@@ -159,7 +159,7 @@ const Post = ({
           <div className="text-xs text-gray-400">{timeAgo}</div>
         </div>
         <div className="tags flex gap-2">
-          <div className="p-2 rounded-lg   border bg-purple-200">
+          <div className="p-2 rounded-lg bg-gray-200 border border-gray-300 text-gray-500">
             {category[0].toUpperCase() + category.substring(1)}
           </div>
         </div>
@@ -167,14 +167,14 @@ const Post = ({
           <BookmarkIcon className="w-5 h-5" />
         </div> */}
       </div>
-      <div className="title font-bold text-lg mb-1">{questionTitle}</div>
+      <div className="py-4 title font-bold text-xl mb-1">{questionTitle}</div>
       <div className="content mb-3">{content}</div>
       {imageURL && (
         <div className="picture rounded overflow-hidden mb-3 w-max max-w-full">
           <img src={imageURL} alt="profile photo" />
         </div>
       )}
-      <div className="options flex text-sm items-center justify-between mb-3">
+      <div className="options flex text-sm items-center ml-auto mb-3">
         <div className="likes-dislikes flex p-3 w-14 rounded-3xl bg-gray-100 gap-2 mr-2 items-center">
           {/* <div className="likes flex gap-1">
             <div className="img">
@@ -200,12 +200,12 @@ const Post = ({
           </div>
           <div className="number">{comments2?.length}</div>
         </div>
-        <div className="follow-post flex items-center p-3 rounded-3xl bg-gray-100 gap-1">
+        {/* <div className="follow-post flex items-center p-3 rounded-3xl bg-gray-100 gap-1">
           <div className="img">
             <BellIcon className="w-5 h-5" />
           </div>
           <div className="text">Follow this post</div>
-        </div>
+        </div> */}
       </div>
       {replying && (
         <CommentForm
@@ -230,7 +230,11 @@ const Post = ({
                 />
               );
             })
-          : replying || <div>Be the first to comment!</div>}
+          : replying || (
+              <div className="block w-full text-center px-4 py-2 m-auto bg-gray-50 text-gray-500 rounded-xl">
+                Be the first to comment!
+              </div>
+            )}
       </div>
     </div>
   );

@@ -29,10 +29,13 @@ const Navbar = () => {
   const { data, error } = useSWR(`/api/getUserProfile/${username}`, swrFetcher);
 
   const signInWithGoogle = async () => {
-    await signInWithPopup(auth, googleAuthProvider).catch((error) => {
-      console.error(error);
-    });
-    toast.success("You are logged in.");
+    await signInWithPopup(auth, googleAuthProvider)
+      .then(() => {
+        toast.success("You are logged in.");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const signOutGoogle = () => {
@@ -99,17 +102,18 @@ const Navbar = () => {
                 </div>
                 <div className="hidden lg:ml-4 lg:block">
                   <div className="flex items-center">
-                    <div className="hidden lg:ml-6 lg:block">
-                      <div className="flex space-x-4">
-                        {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                        <a
-                          href="quiz"
-                          className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
-                        >
-                          Quiz
-                        </a>
+                    {user && !isAuthLoading && (
+                      <div className="hidden lg:ml-6 lg:block">
+                        <div className="flex space-x-4">
+                          <a
+                            href="quiz"
+                            className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all"
+                          >
+                            Quiz
+                          </a>
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="hidden lg:ml-6 lg:block">
                       <div className="flex space-x-4">

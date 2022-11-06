@@ -1,4 +1,15 @@
-## Getting Started
+## Project description
+
+Connexa is a community forum for blockchain & cryptocurrency enthusiasts.
+It is a one-stop platform where anyone from a rookie to a veteran can come together to discuss anything and everything crypto-related.
+
+## Group details
+
+- Terry Tan Jun Wei (A0199745H)
+- Harmon Theodore Chew Xin Xiang (A0216792X)
+- Colin Chan Wei Hua (A0199771J)
+
+## How to set up the project
 
 Disclaimer: Please only use `yarn` as we don't want any conflicts of npm & yarn during the development process!
 
@@ -16,16 +27,12 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the webpage.
 
-## More info
+## Backend information
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+We are using Firebase as our backend in these areas:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Auth
+2. Database
+3. Media Storage
 
-## Deploying on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-It connects to your Github repo directly and provides a seamless CI/CD + deployment experience.
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Please contact us if you need the access to our Firebase.
