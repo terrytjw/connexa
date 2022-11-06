@@ -4,7 +4,7 @@ import NewPost from "../components/NewPost";
 import CryptoFeed from "../components/NewPrices";
 import Categories from "../components/Categories/Categories";
 import NewsArticle from "../components/NewNews";
-import { collectionGroup } from "firebase/firestore";
+import { collectionGroup, onSnapshot, where } from "../lib/firebase";
 import {
   getFirestore,
   query,
@@ -14,6 +14,7 @@ import {
   postToJSON,
 } from "../lib/firebase";
 import PostList from "../components/Posts";
+import { useEffect, useState } from "react";
 
 type Article = {
   Date: string;
@@ -46,12 +47,44 @@ type Post = {
 type Props = {
   articles: Article[];
   price_feed: Crypto[];
-  posts: Post[];
+  // posts: Post[];
 };
 
-const LIMIT = 2;
+const LIMIT = 10;
 
-const HomePage = ({ posts, articles, price_feed }: Props) => {
+const HomePage = ({ articles, price_feed }: Props) => {
+  const [category, setCategory] = useState("all");
+  const [posts, setPosts] = useState<any>([]);
+
+  useEffect(() => {
+    const postRef = collectionGroup(getFirestore(), "posts");
+    const postsQuery =
+      category !== "all"
+        ? query(
+            postRef,
+            where("category", "==", category),
+            orderBy("createdAt", "desc"),
+            limit(LIMIT)
+          )
+        : query(postRef, orderBy("createdAt", "desc"), limit(LIMIT));
+    const unsubscribe = onSnapshot(postsQuery, (querySnapshot) => {
+      const postSnapshot = querySnapshot.docs;
+      const data = postSnapshot.map(postToJSON);
+      const postlist: any[] = [];
+      data.forEach((doc) => {
+        postlist.push(doc);
+      });
+      setPosts(postlist);
+    });
+    // const snapshot = (await getDocs(postsQuery)).docs.map(postToJSON);
+    // const postlist: Post[] = [];
+    // snapshot.forEach((doc) => {
+    //   postlist.push(doc);
+    // });
+    // setPosts(postlist);
+    // getPosts();
+  }, [category]);
+
   return (
     <div className="bg-[#faf5f8]">
       <Head>
@@ -65,8 +98,8 @@ const HomePage = ({ posts, articles, price_feed }: Props) => {
 
       <div className="flex justify-between h-screen">
         {/* Left Side bar */}
-        <div className="grow-[2]">
-          <Categories />
+        <div className="mt-20">
+          <Categories category={category} setCategory={setCategory} />
         </div>
         <div className="border border-x-gray-300 grow-[5.5]">
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
@@ -76,18 +109,18 @@ const HomePage = ({ posts, articles, price_feed }: Props) => {
           <PostList posts={posts} />
         </div>
         {/* Right side bar */}
-        <div className="grow-[2.5]">
-          <a className="top p-4 text-red-500 font-semibold text-2xl text-center mb-1 leading-none">
+        <div className="mt-20">
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
             Trending News
           </a>
-          <div className="grow-[2.5]">
+          <div>
             <NewsArticle articles={articles} />
           </div>
           <br></br>
-          <a className="top p-4 text-red-500 font-semibold text-2xl text-center mb-1 leading-none">
-            Price Action
+          <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
+            Prices
           </a>
-          <div className="grow-[2.5]">
+          <div>
             <CryptoFeed cryptocurrencies={price_feed} />
           </div>
         </div>
@@ -113,9 +146,9 @@ export default HomePage;
 
 export async function getServerSideProps() {
   // get post data
-  const postRef = collectionGroup(getFirestore(), "posts");
-  const postsQuery = query(postRef, orderBy("createdAt", "desc"), limit(LIMIT));
-  const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
+  // const postRef = collectionGroup(getFirestore(), "posts");
+  // const postsQuery = query(postRef, orderBy("createdAt", "desc"), limit(LIMIT));
+  // const posts = (await getDocs(postsQuery)).docs.map(postToJSON);
 
   // get articles data
   const articleRef = collectionGroup(getFirestore(), "news");
@@ -128,6 +161,6 @@ export async function getServerSideProps() {
   const price_feed = (await getDocs(priceQuery)).docs.map((doc) => doc.data());
 
   return {
-    props: { posts, articles, price_feed },
+    props: { articles, price_feed },
   };
 }

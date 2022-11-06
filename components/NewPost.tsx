@@ -86,6 +86,7 @@ const NewPost = () => {
             displayName: user.displayName,
             photoURL: auth.currentUser?.photoURL,
             content: description.value || "default content",
+            category: selectedCategory,
             imageURL: "",
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
@@ -217,6 +218,21 @@ const NewPost = () => {
               }
             >
               NFTs
+            </RadioGroup.Option>
+
+            <RadioGroup.Option
+              value="metaverse"
+              className={({ active, checked }) =>
+                `${active ? "" : ""}
+                  ${
+                    checked
+                      ? "text-red-500 bg-green-100 border-red-300"
+                      : "bg-white border-gray-400"
+                  }
+                   text-gray-500 border-[1px] hover:text-red-500 hover:bg-red-100 hover:border-red-300 transition-all relative flex cursor-pointer rounded-lg px-2 py-1 shadow-md focus:outline-none`
+              }
+            >
+              Gaming and Metaverse
             </RadioGroup.Option>
           </div>
         </RadioGroup>

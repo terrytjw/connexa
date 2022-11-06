@@ -25,6 +25,8 @@ type CommentProp = {
   slug: string;
   uid: string;
   comments: CommentType[] | undefined;
+  authorUid: string;
+  username: string;
 };
 
 type CommentType = {
@@ -36,6 +38,8 @@ type CommentType = {
   displayName: string;
   photoURL: string;
   slug: string;
+  authorUid: string;
+  username: string;
 };
 
 const compare = (a: CommentType, b: CommentType) => {
@@ -54,6 +58,8 @@ const Comment = ({
   slug,
   comments,
   uid,
+  authorUid,
+  username,
 }: CommentProp) => {
   const dateFormatter = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
@@ -180,6 +186,7 @@ const Comment = ({
               initialValue={message}
               uid={uid}
               id={id}
+              username={username}
             />
           </div>
         ) : (
@@ -196,7 +203,7 @@ const Comment = ({
               </div>
               <div className="message text-sm mb-3">{message}</div>
               <div className="buttons flex justify-end items-center">
-                {auth.currentUser?.uid === uid && (
+                {authorUid === auth.currentUser?.uid && (
                   <>
                     <div className="delete  mr-2 cursor-pointer">
                       <TrashIcon
@@ -236,6 +243,7 @@ const Comment = ({
           slug={slug}
           parentId={id}
           uid={uid}
+          username={username}
         />
       )}
 

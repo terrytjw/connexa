@@ -18,13 +18,18 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import PencilIcon from "@heroicons/react/24/outline/PencilIcon";
 import { getUserProfileData } from "../api/getUserProfile/[username]";
+import Rewards from "../../components/Rewards";
 
 type UserProfilePageProps = {
   user: User;
   posts: any;
+  comments: any;
 };
-const UserProfilePage = ({ user, posts }: UserProfilePageProps) => {
+
+const UserProfilePage = ({ user, posts, comments }: UserProfilePageProps) => {
   const router = useRouter();
+  console.log("IN PROFILE PAGE USER DATA", comments);
+  const numberOfPoints = user.points || 0;
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [username, setUsername] = useState("");
@@ -122,8 +127,8 @@ const UserProfilePage = ({ user, posts }: UserProfilePageProps) => {
           <div className="flex flex-col justify-center text-center p-4 h-[35rem] bg-white border rounded-xl">
             <p className="mb-1 text-4xl font-bold">{user.displayName}</p>
             <p className="mb-4 text-gray-400">@{user.username}</p>
-            <div className="mb-4 h-[10rem] bg-black text-white p-4 rounded">
-              Rewards section
+            <div className="flex justify-center mb-4">
+              <Rewards points={numberOfPoints} />
             </div>
             <button
               onClick={() => setIsEditingProfile(true)}
@@ -134,7 +139,7 @@ const UserProfilePage = ({ user, posts }: UserProfilePageProps) => {
           </div>
         </div>
 
-        <TabGroup />
+        <TabGroup posts={posts} comments={comments} />
       </div>
 
       <Transition appear show={isEditingProfile} as={Fragment}>
