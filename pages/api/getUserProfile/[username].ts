@@ -5,6 +5,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   collection,
+  collectionGroup,
   getDocs,
   getFirestore,
   getUserWithUsername,
@@ -15,11 +16,15 @@ import {
   where,
 } from "../../../lib/firebase";
 
+const POST_LIMIT = 5;
+const COMMENT_LIMIT = 10;
+
 export const getUserProfileData = async (username: any) => {
   const userDoc = await getUserWithUsername(username);
 
   let user;
   let posts;
+  let comments;
 
   if (!userDoc) {
     return {
@@ -31,12 +36,22 @@ export const getUserProfileData = async (username: any) => {
 
     const postsQuery = query(
       collection(getFirestore(), userDoc.ref.path, "posts"),
-      where("published", "==", true),
       orderBy("createdAt", "desc"),
-      limit(5)
+      limit(POST_LIMIT)
     );
+
+    const commentsRef = collectionGroup(getFirestore(), "comments");
+    const commentsQuery = query(
+      commentsRef,
+      where("username", "==", user.username),
+      orderBy("createdAt", "desc"),
+      limit(COMMENT_LIMIT)
+    );
+
     posts = (await getDocs(postsQuery)).docs.map(postToJSON);
-    return { user, posts };
+    comments = (await getDocs(commentsQuery)).docs.map(postToJSON);
+
+    return { user, posts, comments };
   }
 };
 

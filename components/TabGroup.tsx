@@ -1,40 +1,16 @@
 import { useState } from "react";
 import { Tab } from "@headlessui/react";
+import PostList from "./Posts";
 
-const TabGroup = () => {
+type TabGroupProps = {
+  posts: any;
+  comments: any;
+};
+
+const TabGroup = ({ posts, comments }: TabGroupProps) => {
   let [categories] = useState({
-    Posts: [
-      {
-        id: 1,
-        title: "Does drinking coffee make you smarter?",
-        date: "5h ago",
-        commentCount: 5,
-        shareCount: 2,
-      },
-      {
-        id: 2,
-        title: "So you've bought coffee... now what?",
-        date: "2h ago",
-        commentCount: 3,
-        shareCount: 2,
-      },
-    ],
-    Comments: [
-      {
-        id: 1,
-        title: "Is tech making coffee better or worse?",
-        date: "Jan 7",
-        commentCount: 29,
-        shareCount: 16,
-      },
-      {
-        id: 2,
-        title: "The most innovative things happening in coffee",
-        date: "Mar 19",
-        commentCount: 24,
-        shareCount: 12,
-      },
-    ],
+    Posts: posts,
+    Comments: comments,
   });
 
   return (
@@ -64,7 +40,8 @@ const TabGroup = () => {
               key={idx}
               className={`rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2`}
             >
-              <ul>
+              <PostList posts={posts} />
+              {/* <ul>
                 {posts.map((post) => (
                   <li
                     key={post.id}
@@ -88,7 +65,7 @@ const TabGroup = () => {
                     />
                   </li>
                 ))}
-              </ul>
+                </ul> */}
             </Tab.Panel>
           ))}
         </Tab.Panels>
