@@ -30,7 +30,7 @@ const Crypto = ({ Token, Price, Change, slug }: Crypto) => {
 
   return (
     <div className="p-2 md:p-4">
-      <h3 className="font-bold text-lg">{Token}</h3>
+      <h3 className="inline-block font-bold text-lg">{Token}</h3>
       <h4>
         <span className="text-lg">{Price}</span>
         <span

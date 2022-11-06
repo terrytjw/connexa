@@ -31,13 +31,13 @@ const User = ({ username, points, slug }: User) => {
 const Leaderboard = ({ usernames }: Props) => {
   var count = 0;
   return (
-    <div className="grow-[5.5]">
+    <div>
       <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
         Leaderboard
       </h1>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle">
+          <div className="m-auto p-1.5 w-[60%] align-middle">
             <div className="overflow-hidden border rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -73,8 +73,8 @@ const Leaderboard = ({ usernames }: Props) => {
                         <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                           {count}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                          {user.username}
+                        <td className="px-6 py-4 text-sm text-gray-400 font-semibold whitespace-nowrap">
+                          @{user.username}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                           {user.points}
