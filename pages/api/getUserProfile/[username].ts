@@ -36,8 +36,7 @@ export const getUserProfileData = async (username: any) => {
 
     const postsQuery = query(
       collection(getFirestore(), userDoc.ref.path, "posts"),
-      orderBy("createdAt", "desc"),
-      limit(POST_LIMIT)
+      orderBy("createdAt", "desc")
     );
 
     const commentsRef = collectionGroup(getFirestore(), "comments");

@@ -32,7 +32,9 @@ const Article = ({ Date, Link, Time, Title, slug }: Article) => {
     <div className="p-2 md:p-5">
       <h3 className="font-semibold mb-1 text-m leading-tight sm:leading-normal">
         <u>
-          <a href={Link}>{Title}</a>
+          <a href={Link} target="_blank">
+            {Title}
+          </a>
         </u>
       </h3>
       <div className="text-sm flex items-center">
