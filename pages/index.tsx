@@ -97,7 +97,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
 
       <div className="flex justify-between">
         {/* Left Side bar */}
-        <div className="mt-20 grow-[1]">
+        <div className="mt-20 w-64">
           <Categories
             category={category}
             setCategory={setCategory}
@@ -105,7 +105,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
             setNumberPosts={setNumberPosts}
           />
         </div>
-        <div className="border border-x-gray-300 grow-[6.5]">
+        <div className=" grow-[6.5]">
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>

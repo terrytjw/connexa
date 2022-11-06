@@ -82,11 +82,37 @@ export async function getUserWithUsername(username: any) {
   return userDoc;
 }
 
+export async function getPostWithUsernameAndSlug(username: any, slug: any) {
+  const q = query(
+    collection(firestore, "users"),
+    where("username", "==", username),
+    limit(1)
+  );
+  const userDoc = (await getDocs(q)).docs[0];
+
+  if (!userDoc) {
+    return {
+      notFound: true,
+    };
+  } else {
+    const userPath = userDoc.ref.path;
+    const uid = userPath.split("/")[1];
+    // const data = await getUserProfileData(username);
+
+    const postPath = "users/" + uid + "/posts/" + slug;
+
+    const postDoc = doc(firestore, postPath);
+    const post = postToJSON(await getDoc(postDoc)) || "NO POST";
+
+    return { post };
+  }
+}
+
 /**`
  * Converts a firestore document to JSON
  * @param  {DocumentSnapshot} doc
  */
-export function postToJSON(doc: QueryDocumentSnapshot<DocumentData>) {
+export function postToJSON(doc: any) {
   const data = doc.data({ serverTimestamps: "estimate" });
   return {
     ...data,
