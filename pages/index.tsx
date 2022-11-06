@@ -96,12 +96,12 @@ const HomePage = ({ articles, price_feed }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex justify-between h-screen">
+      <div className="flex justify-between">
         {/* Left Side bar */}
-        <div className="mt-20">
+        <div className="mt-20 grow-[1]">
           <Categories category={category} setCategory={setCategory} />
         </div>
-        <div className="border border-x-gray-300 grow-[5.5]">
+        <div className="border border-x-gray-300 grow-[6.5]">
           <h1 className="mb-10 text-5xl font-bold pt-20 text-center">
             Welcome to Connexa!
           </h1>
@@ -109,7 +109,7 @@ const HomePage = ({ articles, price_feed }: Props) => {
           <PostList posts={posts} />
         </div>
         {/* Right side bar */}
-        <div className="mt-20">
+        <div className="pl-8 mt-20 w-[30rem]">
           <a className="top p-4 font-semibold text-2xl text-gray-600 text-center mb-1 leading-none">
             Trending News
           </a>
@@ -125,19 +125,6 @@ const HomePage = ({ articles, price_feed }: Props) => {
           </div>
         </div>
       </div>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
 };

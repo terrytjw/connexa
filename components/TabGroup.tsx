@@ -4,13 +4,11 @@ import PostList from "./Posts";
 
 type TabGroupProps = {
   posts: any;
-  comments: any;
 };
 
-const TabGroup = ({ posts, comments }: TabGroupProps) => {
+const TabGroup = ({ posts }: TabGroupProps) => {
   let [categories] = useState({
     Posts: posts,
-    Comments: comments,
   });
 
   return (
