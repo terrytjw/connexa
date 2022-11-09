@@ -149,6 +149,7 @@ const NewPost = ({ setCategory }: Props) => {
           className="p-4 pt-2.5 block w-full text-lg font-medium placeholder-gray-400 border-0 border-b border-gray-300 focus:border-gray-300"
           placeholder="Ask a question"
           autoFocus={true}
+          autoComplete="off"
         />
         <label htmlFor="description" className="sr-only">
           Description

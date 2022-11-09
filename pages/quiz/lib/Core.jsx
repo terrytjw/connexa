@@ -90,6 +90,8 @@ const Core = function ({
     }
   };
 
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+
   useEffect(() => {
     setShowDefaultResult(
       showDefaultResult !== undefined ? showDefaultResult : true
@@ -210,29 +212,34 @@ const Core = function ({
     answerSelectionType = answerSelectionType || "single";
 
     return answers.map((answer, index) => (
-      <div className="rounded-md mb-4 px-4 py-2 font-medium text-grey border border-black hover:bg-black hover:text-white transition-all">
+      <div
+        className={`${
+          selectedAnswer === index && "border-black bg-black text-white"
+        } rounded-md mb-4 px-4 py-2 font-medium text-grey border border-black hover:bg-black hover:text-white transition-all`}
+        onClick={() => {
+          onClickAnswer(index);
+          setSelectedAnswer(index);
+        }}
+      >
         <Fragment key={index}>
           {buttons[index] !== undefined ? (
             <button
               type="button"
               disabled={buttons[index].disabled || false}
-              className={`${buttons[index].className} answerBtn btn`}
-              onClick={() =>
-                revealAnswerOnSubmit
-                  ? onSelectAnswer(index)
-                  : onClickAnswer(index)
-              }
+              className={`${buttons[index].className} answerBtn btn ${
+                selectedAnswer === index && "border-black bg-black text-white"
+              }`}
+              onClick={() => {}}
             >
               {questionType === "text" && <span>{answer}</span>}
             </button>
           ) : (
             <button
               type="button"
-              onClick={() =>
-                revealAnswerOnSubmit
-                  ? onSelectAnswer(index)
-                  : onClickAnswer(index)
-              }
+              onClick={() => {
+                setSelectedAnswer(null);
+                onClickAnswer(index);
+              }}
               className={`answerBtn btn ${
                 allowNavigation && checkSelectedAnswer(index + 1)
                   ? "selected"
@@ -325,7 +332,10 @@ const Core = function ({
             <div>
               <div className="rounded-md px-1 py-2 text-sm font-medium text-black hover:bg-black hover:text-white transition-all">
                 <button
-                  onClick={() => nextQuestion(currentQuestionIndex)}
+                  onClick={() => {
+                    setSelectedAnswer(null);
+                    nextQuestion(currentQuestionIndex);
+                  }}
                   className="nextQuestionBtn btn"
                   type="button"
                 >
