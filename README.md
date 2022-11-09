@@ -36,3 +36,7 @@ We are using Firebase as our backend in these areas:
 3. Media Storage
 
 Please contact us if you need the access to our Firebase.
+
+## Video Presentation Link
+
+https://drive.google.com/file/d/103XQ-Be0JahzqsgXLsjicPn60yjYQqzy/view?usp=sharing
